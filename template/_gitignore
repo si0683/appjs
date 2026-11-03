@@ -43,3 +43,6 @@ expo-env.d.ts
 /ios
 /android
 .env
+
+# Obsidian: состояние окна
+TechnicalSpecification/.obsidian/workspace*.json

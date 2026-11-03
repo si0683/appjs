@@ -12,3 +12,4 @@ AppJS is a **project starter**: the npm package `create-appjs` copies `template/
 - Versions: `version` in package.json + CHANGELOG.md + tag `vX.Y.Z`.
 - `index.html` in the root is the GitHub Pages page: only a short install guide and the stack table, one screen without scrolling, Inter font.
 - `PROMT.md` (Russian fill-in brief for AI assistants) lives in the root and as `template/PROMT.md` — keep both copies identical.
+- `TechnicalSpecification/` — the fill-in technical specification as an Obsidian vault (notes with YAML properties, `_Шаблоны/` templates, example notes, two `.canvas` maps). It lives in the root (to download) and as `template/TechnicalSpecification/` in every new project — keep both identical; they are generated together. When the stack, flags or file names change, update the spec notes too (especially `00 Паспорт.md`, `06`, `08`, `10` and the README section for AI).

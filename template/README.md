@@ -97,3 +97,7 @@ eas.json               профили сборки EAS
 ## Веб-версия
 
 `npm run web` — для отладки вёрстки. База SQLite в браузере работает через WebAssembly и требует заголовков COOP/COEP (уже настроены в `metro.config.js` и `app.json`); при первом открытии адрес на секунду сменится на `/index.html` — так задумано.
+
+## Сначала ТЗ
+
+Откройте папку `TechnicalSpecification` в [Obsidian](https://obsidian.md) как хранилище и заполните заметки (начните с `README.md` и `00 Паспорт.md`). Потом попросите ИИ-ассистента: «Прочитай TechnicalSpecification/ и разверни проект».

@@ -1,0 +1,27 @@
+{
+	"nodes":[
+		{"id": "legend", "type": "text", "x": -40, "y": -300, "width": 460, "height": 200, "text": "## Экраны и переходы\nКарточка — экран, стрелка — переход (подпись — что нажали).\nЗелёные — вкладки, синие — модальные окна.\nСвои экраны: замените примеры, перетащите заметки из папки «Экраны».", "color": "4"},
+		{"id": "launch", "type": "text", "x": 0, "y": 0, "width": 240, "height": 110, "text": "**Запуск**\nзаставка"},
+		{"id": "onb", "type": "text", "x": 320, "y": 0, "width": 240, "height": 110, "text": "**Онбординг**\n3 слайда (если включён)"},
+		{"id": "signin", "type": "text", "x": 640, "y": -160, "width": 240, "height": 110, "text": "**Вход**\nмодальное", "color": "5"},
+		{"id": "tabs", "type": "text", "x": 640, "y": 0, "width": 240, "height": 80, "text": "**Вкладки**"},
+		{"id": "home", "type": "file", "x": 960, "y": -200, "width": 300, "height": 320, "file": "Экраны/Главная.md", "color": "4"},
+		{"id": "t2", "type": "text", "x": 960, "y": 160, "width": 240, "height": 110, "text": "**«Вкладка 2»**\nсписок", "color": "4"},
+		{"id": "t3", "type": "text", "x": 960, "y": 320, "width": 240, "height": 110, "text": "**«Вкладка 3»**", "color": "4"},
+		{"id": "settings", "type": "text", "x": 960, "y": 480, "width": 240, "height": 110, "text": "**Настройки**\nтема, язык, аккаунт", "color": "4"},
+		{"id": "detail", "type": "text", "x": 1340, "y": 160, "width": 240, "height": 110, "text": "**Подробности**\n/item/[id]"},
+		{"id": "form", "type": "text", "x": 1340, "y": -40, "width": 240, "height": 110, "text": "**Новая запись**\nмодальное с формой", "color": "5"}
+	],
+	"edges":[
+		{"id": "a1", "fromNode": "launch", "fromSide": "right", "toNode": "onb", "toSide": "left", "label": "первый запуск"},
+		{"id": "a2", "fromNode": "onb", "fromSide": "right", "toNode": "tabs", "toSide": "left", "label": "Начать"},
+		{"id": "a3", "fromNode": "tabs", "fromSide": "top", "toNode": "signin", "toSide": "bottom", "label": "нужен вход"},
+		{"id": "a4", "fromNode": "tabs", "fromSide": "right", "toNode": "home", "toSide": "left"},
+		{"id": "a5", "fromNode": "tabs", "fromSide": "right", "toNode": "t2", "toSide": "left"},
+		{"id": "a6", "fromNode": "tabs", "fromSide": "right", "toNode": "t3", "toSide": "left"},
+		{"id": "a7", "fromNode": "tabs", "fromSide": "right", "toNode": "settings", "toSide": "left"},
+		{"id": "a8", "fromNode": "t2", "fromSide": "right", "toNode": "detail", "toSide": "left", "label": "нажал элемент"},
+		{"id": "a9", "fromNode": "home", "fromSide": "right", "toNode": "form", "toSide": "left", "label": "«Добавить»"},
+		{"id": "a10", "fromNode": "settings", "fromSide": "left", "toNode": "signin", "toSide": "bottom", "label": "Войти"}
+	]
+}

@@ -1,0 +1,31 @@
+{
+	"nodes":[
+		{"id": "passport", "type": "file", "file": "00 Паспорт.md", "x": 560, "y": -520, "width": 400, "height": 400, "color": "1"},
+		{"id": "legend", "type": "text", "text": "## Как пользоваться картой\n- Карточка = заметка ТЗ. Двойной клик — открыть.\n- Заполняйте сверху вниз: Паспорт → Продукт → Внешний вид → Техника → Запуск.\n- Двойной клик по пустому месту — своя карточка (идея, вопрос).\n- Перетащите заметку из списка слева — новая карточка-ссылка.\n- Тяните от края карточки — стрелка-связь.", "x": 0, "y": -520, "width": 500, "height": 260, "color": "4"},
+		{"id": "g0", "type": "group", "x": 0, "y": 0, "width": 440, "height": 960, "label": "Продукт", "color": "5"},
+		{"id": "g0f0", "type": "file", "file": "01 Идея и аудитория.md", "x": 20, "y": 40, "width": 400, "height": 260},
+		{"id": "g0f1", "type": "file", "file": "04 Экраны и навигация.md", "x": 20, "y": 340, "width": 400, "height": 260},
+		{"id": "g0f2", "type": "file", "file": "05 Функции.md", "x": 20, "y": 640, "width": 400, "height": 260},
+		{"id": "g1", "type": "group", "x": 500, "y": 0, "width": 440, "height": 960, "label": "Внешний вид", "color": "6"},
+		{"id": "g1f0", "type": "file", "file": "02 Дизайн.md", "x": 520, "y": 40, "width": 400, "height": 260},
+		{"id": "g1f1", "type": "file", "file": "03 Языки и тексты.md", "x": 520, "y": 340, "width": 400, "height": 260},
+		{"id": "g1f2", "type": "file", "file": "09 Контент и медиа.md", "x": 520, "y": 640, "width": 400, "height": 260},
+		{"id": "g2", "type": "group", "x": 1000, "y": 0, "width": 440, "height": 960, "label": "Техника", "color": "4"},
+		{"id": "g2f0", "type": "file", "file": "06 Данные и хранение.md", "x": 1020, "y": 40, "width": 400, "height": 260},
+		{"id": "g2f1", "type": "file", "file": "07 Пользователи и безопасность.md", "x": 1020, "y": 340, "width": 400, "height": 260},
+		{"id": "g2f2", "type": "file", "file": "08 Интеграции и оплата.md", "x": 1020, "y": 640, "width": 400, "height": 260},
+		{"id": "g3", "type": "group", "x": 1500, "y": 0, "width": 440, "height": 1260, "label": "Запуск", "color": "3"},
+		{"id": "g3f0", "type": "file", "file": "10 Публикация.md", "x": 1520, "y": 40, "width": 400, "height": 260},
+		{"id": "g3f1", "type": "file", "file": "11 Качество и аналитика.md", "x": 1520, "y": 340, "width": 400, "height": 260},
+		{"id": "g3f2", "type": "file", "file": "12 Этапы и готовность.md", "x": 1520, "y": 640, "width": 400, "height": 260},
+		{"id": "g3f3", "type": "file", "file": "13 Решения и вопросы.md", "x": 1520, "y": 940, "width": 400, "height": 260}
+	],
+	"edges":[
+		{"id": "e0", "fromNode": "passport", "fromSide": "bottom", "toNode": "g0", "toSide": "top"},
+		{"id": "e1", "fromNode": "passport", "fromSide": "bottom", "toNode": "g1", "toSide": "top"},
+		{"id": "e2", "fromNode": "passport", "fromSide": "bottom", "toNode": "g2", "toSide": "top"},
+		{"id": "e3", "fromNode": "passport", "fromSide": "bottom", "toNode": "g3", "toSide": "top"},
+		{"id": "ed1", "fromNode": "g0f2", "fromSide": "right", "toNode": "g2f0", "toSide": "left", "label": "какие данные нужны"},
+		{"id": "ed2", "fromNode": "g1f0", "fromSide": "bottom", "toNode": "g1f1", "toSide": "top"}
+	]
+}
