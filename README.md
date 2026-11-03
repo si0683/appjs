@@ -1,0 +1,49 @@
+# AppJS
+
+**Стек для мобильных приложений Android и iOS одной командой.** Один код на TypeScript → два магазина. Без Mac.
+
+```bash
+npm create appjs@latest my-app
+```
+
+До публикации в npm: `npx github:si0683/appjs my-app`
+
+## Как начать
+
+1. `npm create appjs@latest my-app` — проект с демо-приложением (вкладки, заметки в SQLite, лента с сервера, настройки, вход).
+2. `cd my-app` → `npm start` → отсканируйте QR в **Expo Go** на телефоне. Не видит компьютер — `npm run tunnel`.
+3. Меняйте экраны в `src/app/` — телефон обновится сразу. Сборка для магазинов — `npm run build:prod` и `npm run submit` (облако EAS).
+
+Опции: `--id=ru.company.myapp` (id для App Store / Google Play), `--no-install`, `--no-git`.
+
+## Стек
+
+| Задача | Библиотека |
+| --- | --- |
+| Платформа | [Expo SDK 58](https://docs.expo.dev) · React Native 0.88 · React 19 · TypeScript · React Compiler |
+| Экраны | [Expo Router](https://docs.expo.dev/router/introduction/) — файл = экран, вкладки, модальные окна, deep links |
+| Компоненты | [React Native Reusables](https://reactnativereusables.com) — shadcn/ui для телефона (30 компонентов) |
+| Стили | [Uniwind](https://docs.uniwind.dev) — Tailwind 4, светлая и тёмная тема |
+| Иконки | [Lucide](https://lucide.dev) |
+| Сервер | [TanStack Query](https://tanstack.com/query) + fetch со схемами zod |
+| Состояние | [zustand](https://zustand.docs.pmnd.rs) с сохранением на устройстве |
+| Формы | [react-hook-form](https://react-hook-form.com) + [zod](https://zod.dev) |
+| База на телефоне | [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/) + [Drizzle ORM](https://orm.drizzle.team) с миграциями |
+| Секреты | expo-secure-store (Keychain / Keystore) |
+| Списки, анимации | FlashList · Reanimated 4 · Gesture Handler · sonner-native |
+| Языки | i18next · expo-localization (ru, en) |
+| Качество | Jest + Testing Library · ESLint · Prettier |
+| Сборка | EAS Build / Submit / Update |
+
+Всё из шаблона работает в **Expo Go** — ставить Xcode и Android Studio не нужно.
+
+## Разработка стартера
+
+```bash
+cd template && npm install && npm start   # шаблон — обычное рабочее приложение
+npm run check                             # в template/: типы, линтер, тесты
+```
+
+Правила для ИИ-агентов — [AGENTS.md](AGENTS.md). ТЗ-заполнялка для приложения — [PROMT.md](PROMT.md).
+
+MIT

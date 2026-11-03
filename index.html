@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppJS — стек для приложений Android и iOS одной командой</title>
+  <meta name="description" content="npm create appjs — мобильное приложение на Expo, Expo Router, React Native Reusables, Uniwind, Lucide, TanStack Query, zustand и Drizzle.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='8' y='3' width='16' height='26' rx='4' fill='%237c3aed'/><rect x='13' y='6' width='6' height='1.6' rx='.8' fill='%23fff'/></svg>">
+  <script>
+    (function () {
+      var saved = localStorage.getItem('appjs-theme');
+      document.documentElement.dataset.theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --c1: #7c3aed; --c2: #db2777; --bg: #ffffff; --surface: #f6f5fa; --text: #17122a; --muted: #6b6780;
+      --line: rgba(23, 18, 42, 0.09); --term: #17122a; color-scheme: light;
+    }
+    :root[data-theme="dark"] {
+      --c1: #a78bfa; --c2: #f472b6; --bg: #0b0a10; --surface: #15131d; --text: #f3f1fa; --muted: #9a96ad;
+      --line: rgba(243, 241, 250, 0.08); --term: #1d1a28; color-scheme: dark;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; display: grid; place-items: center; font: 400 14px/1.4 Inter, system-ui, sans-serif; color: var(--text); background: var(--bg); }
+    a { color: var(--c1); }
+    main { width: min(880px, 100% - 32px); padding: 12px 0; }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
+    .logo b { width: 14px; height: 22px; border-radius: 4px; background: linear-gradient(160deg, var(--c1), var(--c2)); }
+    .end { margin-left: auto; display: flex; gap: 6px; }
+    .btn { display: grid; place-items: center; height: 28px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font: 600 12.5px/1 Inter, sans-serif; text-decoration: none; cursor: pointer; }
+    h1 { font-size: clamp(21px, 3.2vw, 27px); line-height: 1.2; letter-spacing: -0.025em; margin: 0 0 4px; }
+    .grad { background: linear-gradient(90deg, var(--c1), var(--c2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { color: var(--muted); margin: 0 0 14px; }
+    .cols { display: grid; grid-template-columns: 1fr 1.15fr; gap: 26px; align-items: start; }
+    h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 8px; }
+    ol { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px; }
+    li { counter-increment: s; display: grid; grid-template-columns: 22px 1fr; gap: 4px 10px; align-items: center; min-width: 0; }
+    li::before { content: counter(s); grid-row: span 2; align-self: start; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, var(--c1), var(--c2)); color: #fff; font-weight: 700; font-size: 12px; }
+    .cmd { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 3px 3px 3px 12px; border-radius: 8px; background: var(--term); color: #f3effd; }
+    .cmd code { flex: 1; min-width: 0; font: 12.5px/1.5 'JetBrains Mono', monospace; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .cmd button { flex: none; padding: 5px 9px; border: 0; border-radius: 6px; background: #fff; color: #17122a; font: 600 12px/1 Inter, sans-serif; cursor: pointer; }
+    .note { color: var(--muted); font-size: 12.5px; margin: 10px 0 0; }
+    code { font: 12px 'JetBrains Mono', monospace; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 4px 0; font-size: 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    td:first-child { width: 118px; font-weight: 600; padding-right: 8px; }
+    td a { text-decoration: none; }
+    td a:hover { text-decoration: underline; }
+    @media (max-width: 720px) {
+      main { padding: 4px 0; }
+      .top { margin-bottom: 8px; }
+      h1 { font-size: 20px; }
+      .lead { font-size: 13px; margin-bottom: 8px; }
+      .cols { grid-template-columns: 1fr; gap: 10px; }
+      ol { gap: 6px; }
+      li span { font-size: 12.5px; }
+      .note { font-size: 12px; margin-top: 6px; }
+      h2 { margin-bottom: 4px; }
+      td:first-child { width: 96px; }
+      td { font-size: 12px; padding: 2px 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div class="logo"><b></b>AppJS</div>
+    <div class="end">
+      <button class="btn" id="theme" aria-label="Тема">◐</button>
+      <a class="btn" href="https://github.com/si0683/appjs">GitHub</a>
+    </div>
+  </div>
+  <h1>Приложение для <span class="grad">Android и iOS</span> одной командой</h1>
+  <p class="lead">Один код на TypeScript — два магазина. Проверка на телефоне через Expo Go, сборка в облаке — Mac не нужен.</p>
+  <div class="cols">
+    <section>
+      <h2>Как начать</h2>
+      <ol>
+        <li><b>Создайте проект</b><div class="cmd"><code>npm create appjs@latest my-app</code><button data-copy>Копировать</button></div></li>
+        <li><b>Откройте на телефоне</b><div class="cmd"><code>cd my-app &amp;&amp; npm start</code><button data-copy>Копировать</button></div></li>
+        <li><b>Меняйте экраны в <code>src/app/</code></b><span>QR-код → Expo Go; изменения видны сразу. Не подключается — <code>npm run tunnel</code>.</span></li>
+        <li><b>Соберите для магазинов</b><div class="cmd"><code>npm run build:prod &amp;&amp; npm run submit</code><button data-copy>Копировать</button></div></li>
+      </ol>
+      <p class="note">ТЗ для нейросети — <a href="https://raw.githubusercontent.com/si0683/appjs/main/PROMT.md">PROMT.md</a>. Опции: <code>--id=ru.company.app</code>, <code>--no-install</code>, <code>--no-git</code>.</p>
+    </section>
+    <section>
+      <h2>Стек</h2>
+      <table>
+        <tr><td>Платформа</td><td><a href="https://docs.expo.dev">Expo SDK 58</a> · React Native 0.88 · React 19 · TypeScript</td></tr>
+        <tr><td>Экраны</td><td><a href="https://docs.expo.dev/router/introduction/">Expo Router</a> — файл = экран</td></tr>
+        <tr><td>Компоненты</td><td><a href="https://reactnativereusables.com">React Native Reusables</a> (shadcn/ui)</td></tr>
+        <tr><td>Стили</td><td><a href="https://docs.uniwind.dev">Uniwind</a> — Tailwind 4, светлая и тёмная тема</td></tr>
+        <tr><td>Иконки</td><td><a href="https://lucide.dev">Lucide</a></td></tr>
+        <tr><td>Сервер</td><td><a href="https://tanstack.com/query">TanStack Query</a> + <a href="https://zod.dev">zod</a></td></tr>
+        <tr><td>Состояние</td><td><a href="https://zustand.docs.pmnd.rs">zustand</a></td></tr>
+        <tr><td>Формы</td><td><a href="https://react-hook-form.com">react-hook-form</a> + zod</td></tr>
+        <tr><td>База</td><td><a href="https://orm.drizzle.team">Drizzle</a> + expo-sqlite · secure-store</td></tr>
+        <tr><td>Интерфейс</td><td>FlashList · Reanimated 4 · sonner-native</td></tr>
+        <tr><td>Языки</td><td><a href="https://www.i18next.com">i18next</a> · ru, en</td></tr>
+        <tr><td>Качество</td><td>Jest · Testing Library · ESLint · Prettier</td></tr>
+        <tr><td>Сборка</td><td><a href="https://docs.expo.dev/eas/">EAS</a> Build · Submit · Update</td></tr>
+      </table>
+    </section>
+  </div>
+</main>
+<script>
+  document.getElementById('theme').onclick = function () {
+    var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('appjs-theme', next);
+  };
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.onclick = function () {
+      navigator.clipboard.writeText(b.previousElementSibling.textContent).then(function () {
+        b.textContent = 'Готово';
+        setTimeout(function () { b.textContent = 'Копировать'; }, 1200);
+      });
+    };
+  });
+</script>
+</body>
+</html>

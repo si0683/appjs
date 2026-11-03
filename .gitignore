@@ -1,0 +1,10 @@
+node_modules/
+template/node_modules/
+template/.expo/
+template/dist/
+template/package-lock.json
+template/ios/
+template/android/
+*.tgz
+_test/
+template/expo-env.d.ts

@@ -1,0 +1,53 @@
+{
+  "name": "create-appjs",
+  "version": "1.0.0",
+  "description": "Mobile app starter for Android and iOS in one command: Expo SDK 58 + Expo Router + React Native Reusables (shadcn) + Uniwind (Tailwind 4) + Lucide + TanStack Query + zustand + react-hook-form + zod + Drizzle/SQLite + i18next + EAS.",
+  "keywords": [
+    "create",
+    "starter",
+    "template",
+    "expo",
+    "react-native",
+    "expo-router",
+    "android",
+    "ios",
+    "shadcn",
+    "react-native-reusables",
+    "tailwind",
+    "uniwind",
+    "lucide",
+    "tanstack-query",
+    "zustand",
+    "drizzle",
+    "sqlite",
+    "eas"
+  ],
+  "homepage": "https://si0683.github.io/appjs/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/si0683/appjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/si0683/appjs/issues"
+  },
+  "license": "MIT",
+  "author": "si0683",
+  "type": "module",
+  "bin": {
+    "create-appjs": "bin/create.mjs"
+  },
+  "files": [
+    "bin",
+    "template",
+    "!template/node_modules",
+    "!template/.expo",
+    "!template/dist",
+    "!template/package-lock.json",
+    "!template/ios",
+    "!template/android",
+    "!template/expo-env.d.ts"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}
