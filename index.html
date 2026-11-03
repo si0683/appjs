@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AppJS — стек для приложений Android и iOS одной командой</title>
-  <meta name="description" content="npm create appjs — мобильное приложение на Expo, Expo Router, React Native Reusables, Uniwind, Lucide, TanStack Query, zustand и Drizzle.">
+  <meta name="description" content="npm create appjs — мобильное приложение для Android и iOS на Expo: биржевые графики TradingView, Victory/Skia, decimal.js, mathjs, статистика как в OsEngine, экспорт в Excel/CSV/PDF.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='8' y='3' width='16' height='26' rx='4' fill='%237c3aed'/><rect x='13' y='6' width='6' height='1.6' rx='.8' fill='%23fff'/></svg>">
   <script>
     (function () {
@@ -49,7 +49,7 @@
     code { font: 12px 'JetBrains Mono', monospace; }
     table { width: 100%; border-collapse: collapse; }
     td { padding: 4px 0; font-size: 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
-    td:first-child { width: 118px; font-weight: 600; padding-right: 8px; }
+    td:first-child { width: 128px; font-weight: 600; padding-right: 8px; }
     td a { text-decoration: none; }
     td a:hover { text-decoration: underline; }
     @media (max-width: 720px) {
@@ -77,7 +77,7 @@
     </div>
   </div>
   <h1>Приложение для <span class="grad">Android и iOS</span> одной командой</h1>
-  <p class="lead">Один код на TypeScript — два магазина. Проверка на телефоне через Expo Go, сборка в облаке — Mac не нужен.</p>
+  <p class="lead">Один код на TypeScript — два магазина. Биржевые графики, точная математика, статистика и экспорт — уже внутри. Mac не нужен.</p>
   <div class="cols">
     <section>
       <h2>Как начать</h2>
@@ -94,16 +94,16 @@
       <table>
         <tr><td>Платформа</td><td><a href="https://docs.expo.dev">Expo SDK 58</a> · React Native 0.88 · React 19 · TypeScript</td></tr>
         <tr><td>Экраны</td><td><a href="https://docs.expo.dev/router/introduction/">Expo Router</a> — файл = экран</td></tr>
-        <tr><td>Компоненты</td><td><a href="https://reactnativereusables.com">React Native Reusables</a> (shadcn/ui)</td></tr>
-        <tr><td>Стили</td><td><a href="https://docs.uniwind.dev">Uniwind</a> — Tailwind 4, светлая и тёмная тема</td></tr>
-        <tr><td>Иконки</td><td><a href="https://lucide.dev">Lucide</a></td></tr>
-        <tr><td>Сервер</td><td><a href="https://tanstack.com/query">TanStack Query</a> + <a href="https://zod.dev">zod</a></td></tr>
-        <tr><td>Состояние</td><td><a href="https://zustand.docs.pmnd.rs">zustand</a></td></tr>
-        <tr><td>Формы</td><td><a href="https://react-hook-form.com">react-hook-form</a> + zod</td></tr>
+        <tr><td>Интерфейс</td><td><a href="https://reactnativereusables.com">Reusables</a> (shadcn) · <a href="https://docs.uniwind.dev">Uniwind</a> · <a href="https://lucide.dev">Lucide</a></td></tr>
+        <tr><td>Свечи</td><td><a href="https://tradingview.github.io/lightweight-charts/">TradingView Lightweight Charts</a></td></tr>
+        <tr><td>Аналитика</td><td><a href="https://nearform.com/open-source/victory-native/">Victory Native</a> + <a href="https://shopify.github.io/react-native-skia/">Skia</a></td></tr>
+        <tr><td>Математика</td><td><a href="https://mikemcl.github.io/decimal.js/">decimal.js</a> · <a href="https://mathjs.org">mathjs</a> · <a href="https://github.com/bennycode/trading-signals">trading-signals</a></td></tr>
+        <tr><td>Статистика</td><td>как в <a href="https://github.com/AlexWan/OsEngine">OsEngine</a> + CAGR, Шарп, Сортино</td></tr>
+        <tr><td>Экспорт</td><td><a href="https://tanstack.com/table">TanStack Table</a> · Excel · CSV · PDF</td></tr>
+        <tr><td>Данные</td><td><a href="https://tanstack.com/query">TanStack Query</a> · WebSocket · <a href="https://zustand.docs.pmnd.rs">zustand</a></td></tr>
+        <tr><td>Формы</td><td><a href="https://react-hook-form.com">react-hook-form</a> + <a href="https://zod.dev">zod</a></td></tr>
         <tr><td>База</td><td><a href="https://orm.drizzle.team">Drizzle</a> + expo-sqlite · secure-store</td></tr>
-        <tr><td>Интерфейс</td><td>FlashList · Reanimated 4 · sonner-native</td></tr>
-        <tr><td>Языки</td><td><a href="https://www.i18next.com">i18next</a> · ru, en</td></tr>
-        <tr><td>Качество</td><td>Jest · Testing Library · ESLint · Prettier</td></tr>
+        <tr><td>Качество</td><td><a href="https://www.i18next.com">i18next</a> (языки) · Jest · ESLint</td></tr>
         <tr><td>Сборка</td><td><a href="https://docs.expo.dev/eas/">EAS</a> Build · Submit · Update</td></tr>
       </table>
     </section>

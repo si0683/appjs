@@ -44,6 +44,8 @@ function RootStack() {
     <Stack screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="note/[id]" options={{ title: '' }} />
+      <Stack.Screen name="market/[symbol]" options={{ title: '' }} />
+      <Stack.Screen name="calculator" options={{ presentation: 'modal', title: t('calc.title') }} />
       <Stack.Screen name="sign-in" options={{ presentation: 'modal', title: t('auth.title') }} />
     </Stack>
   );

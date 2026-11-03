@@ -46,3 +46,6 @@ expo-env.d.ts
 
 # Obsidian: состояние окна
 TechnicalSpecification/.obsidian/workspace*.json
+
+# Skia для браузера (копируется при npm install)
+/public/canvaskit.wasm

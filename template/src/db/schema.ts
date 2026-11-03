@@ -15,3 +15,20 @@ export const notes = sqliteTable('notes', {
 
 export type Note = typeof notes.$inferSelect;
 export type NewNote = typeof notes.$inferInsert;
+
+// Сделки (бумажная торговля и импорт из CSV/Excel). Деньги — строками:
+// их считают через Decimal (src/lib/decimal.ts), а не через числа JS.
+export const trades = sqliteTable('trades', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  symbol: text('symbol').notNull(),
+  side: text('side', { enum: ['buy', 'sell'] }).notNull(),
+  price: text('price').notNull(),
+  qty: text('qty').notNull(),
+  fee: text('fee').notNull().default('0'),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
+});
+
+export type TradeRow = typeof trades.$inferSelect;
+export type NewTrade = typeof trades.$inferInsert;

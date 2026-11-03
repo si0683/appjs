@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { House, NotebookPen, Newspaper, Settings } from 'lucide-react-native';
+import { CandlestickChart, House, NotebookPen, Settings, Wallet } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { tap } from '@/lib/haptics';
@@ -17,17 +17,24 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="market"
+        options={{
+          title: t('tabs.market'),
+          tabBarIcon: ({ color, size }) => <CandlestickChart color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
+        name="portfolio"
+        options={{
+          title: t('tabs.portfolio'),
+          tabBarIcon: ({ color, size }) => <Wallet color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
         name="notes"
         options={{
           title: t('tabs.notes'),
           tabBarIcon: ({ color, size }) => <NotebookPen color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="feed"
-        options={{
-          title: t('tabs.feed'),
-          tabBarIcon: ({ color, size }) => <Newspaper color={color} size={size} />,
         }}
       />
       <Tabs.Screen

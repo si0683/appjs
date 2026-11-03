@@ -10,7 +10,7 @@ npm create appjs@latest my-app
 
 ## Как начать
 
-1. `npm create appjs@latest my-app` — проект с демо-приложением (вкладки, заметки в SQLite, лента с сервера, настройки, вход).
+1. `npm create appjs@latest my-app` — проект с демо-приложением: рынок с живыми котировками Binance, экран инструмента (свечи, индикаторы, стакан, бумажная торговля), портфель (доходность, статистика, экспорт в Excel/CSV/PDF), калькулятор, заметки в SQLite, настройки, вход.
 2. `cd my-app` → `npm start` → отсканируйте QR в **Expo Go** на телефоне. Не видит компьютер — `npm run tunnel`.
 3. Меняйте экраны в `src/app/` — телефон обновится сразу. Сборка для магазинов — `npm run build:prod` и `npm run submit` (облако EAS).
 
@@ -25,7 +25,12 @@ npm create appjs@latest my-app
 | Компоненты | [React Native Reusables](https://reactnativereusables.com) — shadcn/ui для телефона (30 компонентов) |
 | Стили | [Uniwind](https://docs.uniwind.dev) — Tailwind 4, светлая и тёмная тема |
 | Иконки | [Lucide](https://lucide.dev) |
-| Сервер | [TanStack Query](https://tanstack.com/query) + fetch со схемами zod |
+| Сервер | [TanStack Query](https://tanstack.com/query) + fetch со схемами zod, WebSocket с переподключением |
+| Биржевые графики | [TradingView Lightweight Charts](https://tradingview.github.io/lightweight-charts/) — свечи, объём, индикаторы |
+| Графики аналитики | [Victory Native XL](https://nearform.com/open-source/victory-native/) + [Skia](https://shopify.github.io/react-native-skia/) |
+| Математика | [decimal.js](https://mikemcl.github.io/decimal.js/) (деньги) · [mathjs](https://mathjs.org) · [trading-signals](https://github.com/bennycode/trading-signals) (индикаторы) |
+| Статистика | доходность, CAGR, просадка, Шарп, Сортино + отчёт сделок как в [OsEngine](https://github.com/AlexWan/OsEngine) |
+| Таблицы и экспорт | [TanStack Table](https://tanstack.com/table) · Excel ([SheetJS](https://sheetjs.com)) · CSV ([Papa Parse](https://www.papaparse.com)) · PDF |
 | Состояние | [zustand](https://zustand.docs.pmnd.rs) с сохранением на устройстве |
 | Формы | [react-hook-form](https://react-hook-form.com) + [zod](https://zod.dev) |
 | База на телефоне | [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/) + [Drizzle ORM](https://orm.drizzle.team) с миграциями |

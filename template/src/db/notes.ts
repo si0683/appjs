@@ -14,10 +14,16 @@ export function useNote(id: number) {
 }
 
 export const notesRepo = {
-  add: (note: NewNote) => getDb().insert(notes).values(note),
-  toggle: (id: number, done: boolean) =>
-    getDb().update(notes).set({ done }).where(eq(notes.id, id)),
-  update: (id: number, data: Partial<NewNote>) =>
-    getDb().update(notes).set(data).where(eq(notes.id, id)),
-  remove: (id: number) => getDb().delete(notes).where(eq(notes.id, id)),
+  add: async (note: NewNote) => {
+    await getDb().insert(notes).values(note);
+  },
+  toggle: async (id: number, done: boolean) => {
+    await getDb().update(notes).set({ done }).where(eq(notes.id, id));
+  },
+  update: async (id: number, data: Partial<NewNote>) => {
+    await getDb().update(notes).set(data).where(eq(notes.id, id));
+  },
+  remove: async (id: number) => {
+    await getDb().delete(notes).where(eq(notes.id, id));
+  },
 };

@@ -17,7 +17,7 @@ const STACK = "Expo · Expo Router · React Native Reusables · Uniwind · Lucid
 const DEFAULT_DIR = "my-app"
 
 const TEMPLATE = fileURLToPath(new URL("../template", import.meta.url))
-const SKIP = new Set(["node_modules", ".expo", "dist", "package-lock.json", "ios", "android", "expo-env.d.ts"])
+const SKIP = new Set(["node_modules", ".expo", "dist", "package-lock.json", "ios", "android", "expo-env.d.ts", "canvaskit.wasm"])
 const { version } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"))
 
 const color = (code) => (text) => (process.stdout.isTTY ? `\x1b[${code}m${text}\x1b[0m` : text)

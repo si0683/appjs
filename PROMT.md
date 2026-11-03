@@ -2,9 +2,9 @@
 
 > **Как пользоваться:** скопируйте весь этот текст и вставьте в ИИ-ассистента. Или положите файл в папку проекта и напишите: «Прочитай PROMT.md и сделай по нему приложение». Перед отправкой замените `«…»` своими данными, отметьте нужное `[x]` и удалите лишнее. Можно отправить и незаполненным — ИИ сам задаст вопросы.
 
-Ты — senior-разработчик мобильных приложений на React Native и продуктовый дизайнер. Сделай приложение для Android и iOS по этому техническому заданию на стеке **Expo SDK 58 · Expo Router · React Native Reusables (shadcn) · Uniwind (Tailwind 4) · Lucide · TanStack Query · zustand · react-hook-form + zod · Drizzle + expo-sqlite · i18next · TypeScript · EAS**.
+Ты — senior-разработчик мобильных приложений на React Native и продуктовый дизайнер. Сделай приложение для Android и iOS по этому техническому заданию на стеке **Expo SDK 58 · Expo Router · React Native Reusables (shadcn) · Uniwind (Tailwind 4) · Lucide · TanStack Query · zustand · react-hook-form + zod · Drizzle + expo-sqlite · TradingView Lightweight Charts · Victory Native (Skia) · decimal.js · mathjs · trading-signals · TanStack Table · SheetJS · i18next · TypeScript · EAS**.
 
-- **Если у тебя есть доступ к файлам** (Claude Code, Cursor, Codex и т. п.): работай в папке проекта. Если проекта ещё нет, создай его командой `npm create appjs@latest my-app -- --id=ru.company.myapp` и работай в папке `my-app`. В шаблоне уже есть демо (вкладки, заметки в SQLite, лента с сервера, настройки, вход) — замени его на моё приложение, оставив полезную инфраструктуру. Первым прочитай `AGENTS.md`: там правила стека, соблюдай их.
+- **Если у тебя есть доступ к файлам** (Claude Code, Cursor, Codex и т. п.): работай в папке проекта. Если проекта ещё нет, создай его командой `npm create appjs@latest my-app -- --id=ru.company.myapp` и работай в папке `my-app`. В шаблоне уже есть демо (рынок с котировками, свечной график, стакан, бумажная торговля, портфель со статистикой и экспортом, калькулятор, заметки в SQLite, настройки, вход) — замени его на моё приложение, оставив полезную инфраструктуру. Первым прочитай `AGENTS.md`: там правила стека, соблюдай их.
 - **Если ты в обычном чате без доступа к файлам:** проект я создам сам командой `npm create appjs@latest my-app`. Давай мне команды по шагам и файлы целиком, с путями.
 - **Незаполненные поля `«…»` и пункты без отметки:** спроси о них в первых вопросах или прими разумное решение и напиши, какое.
 
@@ -71,6 +71,8 @@
 - Экраны — Expo Router (`src/app/`), компоненты — React Native Reusables, стили — Uniwind (классы Tailwind), иконки — Lucide.
 - Сервер — TanStack Query + `api()` со схемами zod; состояние — zustand; формы — react-hook-form + zod.
 - Локальные данные — Drizzle + expo-sqlite; токены — expo-secure-store.
+- Графики — `@/components/charts` (свечи TradingView, линии/столбцы/кольца Victory); деньги — только Decimal; статистика — `src/lib/finance.ts` и `deal-stats.ts` (как в OsEngine); таблицы — `DataTable`; экспорт — `src/lib/export.ts`.
+- **Графики:** «какие и где» · **Расчёты:** «формулы, показатели» · **Экспорт:** [ ] Excel [ ] CSV [ ] PDF · **Биржа:** [ ] нет [ ] Binance (уже есть) [ ] другая: «…»
 - Модули, которых нет в Expo Go: «…» (тогда нужна dev-сборка — предупреди меня)
 - **Сервер / бэкенд:** «нет / есть: адрес / подобрать»
 

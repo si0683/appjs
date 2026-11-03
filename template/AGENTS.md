@@ -32,7 +32,12 @@ npx expo export --platform android --platform ios   # проверка, что �
 - Глобальное состояние — zustand в `src/stores/`. Настройки сохраняются через `kvStorage`, токены — только через `secureStorage` (`src/lib/storage.ts`).
 - Формы — react-hook-form + zod; схемы в `src/lib/validation.ts`, поле — `<FormField>`.
 - Локальная база — Drizzle + expo-sqlite: схема `src/db/schema.ts`, запросы — `src/db/<таблица>.ts`, экраны SQL не пишут. Миграции в `src/db/migrations/` генерирует drizzle-kit — руками не править.
-- Длинные списки — `FlashList`, не `ScrollView` + `map`.
+- Длинные списки — `FlashList`, не `ScrollView` + `map`; таблицы — `DataTable` (TanStack Table).
+- **Деньги, цены, количества — только Decimal** (`D()` из `src/lib/decimal.ts`), хранить строками; `number` — только для статистики и графиков.
+- Графики — только из `@/components/charts` (там же веб-версия, которая ждёт загрузки Skia). Цвета — `useChartTheme()`. `CandleChart` — Expo DOM component (`'use dom'`): пропсы только JSON-данные.
+- Рыночные данные — через `MarketSource` (`src/features/market`); новая биржа = новый адаптер. Торговые API-ключи — никогда в приложении, только на сервере.
+- Статистика сделок — `src/lib/deal-stats.ts` (перенос `DealStatisticGenerator.cs` из OsEngine; формулы не менять без сверки с OsEngine), метрики капитала — `src/lib/finance.ts`. Новая формула — с тестом в `src/__tests__/finance.test.ts`.
+- Запросы Drizzle ленивые: в репозиториях всегда `await` (иначе запрос не выполнится). `DELETE` — всегда с `where`, иначе `useLiveQuery` не узнает об удалении.
 - Секреты не класть в код и в `EXPO_PUBLIC_*` — эти переменные видны в приложении.
 
 ## Правила

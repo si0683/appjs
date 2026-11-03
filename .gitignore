@@ -10,3 +10,4 @@ _test/
 template/expo-env.d.ts
 TechnicalSpecification/.obsidian/workspace*.json
 template/TechnicalSpecification/.obsidian/workspace*.json
+template/public/canvaskit.wasm

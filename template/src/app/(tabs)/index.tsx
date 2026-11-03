@@ -1,10 +1,12 @@
 import { Link } from 'expo-router';
 import {
+  Calculator,
+  CandlestickChart,
   Database,
-  FormInput,
+  FileSpreadsheet,
   Languages,
   LayoutGrid,
-  RefreshCw,
+  Radio,
   Route,
   Sparkles,
   type LucideIcon,
@@ -22,14 +24,16 @@ import { Text } from '@/components/ui/text';
 import { tap } from '@/lib/haptics';
 import { useAuth } from '@/stores/auth';
 
-type StackKey = 'router' | 'ui' | 'data' | 'db' | 'forms' | 'i18n';
+type StackKey = 'router' | 'ui' | 'charts' | 'math' | 'data' | 'db' | 'export' | 'i18n';
 
 const STACK: { key: StackKey; icon: LucideIcon }[] = [
   { key: 'router', icon: Route },
   { key: 'ui', icon: LayoutGrid },
-  { key: 'data', icon: RefreshCw },
+  { key: 'charts', icon: CandlestickChart },
+  { key: 'math', icon: Calculator },
+  { key: 'data', icon: Radio },
   { key: 'db', icon: Database },
-  { key: 'forms', icon: FormInput },
+  { key: 'export', icon: FileSpreadsheet },
   { key: 'i18n', icon: Languages },
 ];
 
