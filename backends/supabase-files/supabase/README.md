@@ -18,7 +18,12 @@
    npx supabase db push                          # таблицы из supabase/migrations
    npx supabase functions deploy delete-account  # удаление аккаунта (требование магазинов)
    ```
-4. **Authentication → Providers**: почта включена; Google, Apple, VK — по желанию. Для iOS при входе через сторонние сервисы нужен и Sign in with Apple (правило App Store 4.8, `STORES.md`).
+4. **Способы входа:**
+   - **Authentication → Providers.** Почта включена сразу. Телефон, Google и Apple — по желанию: [телефон](https://supabase.com/docs/guides/auth/phone-login), [Google](https://supabase.com/docs/guides/auth/social-login/auth-google), [Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple).
+   - **.env приложения.** В `EXPO_PUBLIC_AUTH_METHODS` перечислите те же способы, например `email,phone,google,apple`. Приложение покажет только их кнопки.
+   - **Возврат после входа.** В **Authentication → URL Configuration → Redirect URLs** добавьте `<схема из app.json>://auth-callback` — туда приложение вернётся после входа через Google или Apple ([подробнее](https://supabase.com/docs/guides/auth/native-mobile-deep-linking)).
+   - **iOS.** Если в iOS-приложении есть вход через Google, App Store требует и Sign in with Apple (правило 4.8, см. `STORES.md`).
+   - **Яндекс ID и VK ID.** В Supabase их нет, для них нужен вариант `--backend=server`.
 
 ## Что где
 

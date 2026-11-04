@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 
-import { auth } from './auth.js';
+import { auth, authMethods } from './auth.js';
 import { sql } from './db/client.js';
 import { env } from './env.js';
 import { log } from './lib/logger.js';
@@ -44,6 +44,8 @@ app.get('/ready', async (c) => {
   }
 });
 
+// Какие способы входа включены (по ключам в .env) — приложение показывает только их
+app.get('/api/auth-methods', (c) => c.json(authMethods));
 app.on(['GET', 'POST'], '/api/auth/*', (c) => auth.handler(c.req.raw));
 app.route('/api/market', market);
 app.route('/api/trades', tradesRoute);

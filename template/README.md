@@ -135,6 +135,8 @@ eas.json               профили сборки EAS
 | `server`   | папка `server/`: Node + Hono, PostgreSQL (Drizzle), Redis, BullMQ, Better Auth, WebSocket; Docker Compose и публикация образа в GitHub Container Registry | большая нагрузка, своя логика, торговые ключи бирж, полный контроль |
 | `supabase` | Supabase: облачная база, вход, файлы, realtime, функции; таблицы с RLS и удаление аккаунта — в `supabase/`                                                | быстрый старт без своего сервера                                    |
 
+**Способы входа** (экран `src/app/sign-in.tsx`): почта и пароль, телефон с кодом по SMS, Google, Apple (в iOS — нативная кнопка), Яндекс ID, VK ID. Показываются только включённые. В демо работают все: код по SMS — `123456`. Со своим сервером способ включается ключами в `server/.env` (инструкция — `server/AUTH.md`). С Supabase — переменной `EXPO_PUBLIC_AUTH_METHODS`; Яндекс ID и VK ID там нет.
+
 Экраны от выбора не меняются: вход — `src/stores/auth.ts`, заголовки запросов — `src/lib/auth-headers.ts`, котировки — `EXPO_PUBLIC_MARKET_SOURCE` (`binance` · `server` · `demo`).
 
 ## Магазины приложений

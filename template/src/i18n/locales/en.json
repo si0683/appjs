@@ -161,7 +161,19 @@
     "titleSignUp": "Sign up",
     "toSignUp": "No account? Sign up",
     "toSignIn": "Have an account? Sign in",
-    "error": "Something went wrong: {{message}}"
+    "error": "Something went wrong: {{message}}",
+    "or": "or",
+    "byEmail": "Email",
+    "byPhone": "Phone",
+    "phone": "Phone number",
+    "getCode": "Get code",
+    "code": "SMS code",
+    "codeSent": "Code sent to {{phone}}",
+    "resendIn": "Resend in {{seconds}} s",
+    "resend": "Resend code",
+    "changePhone": "Different number",
+    "continueWith": "Continue with {{provider}}",
+    "demoCode": "Demo: code 123456"
   },
   "report": {
     "title": "Trade statistics (as in OsEngine)",
@@ -189,7 +201,8 @@
     "required": "Required",
     "email": "Invalid email",
     "min": "At least {{count}} characters",
-    "max": "At most {{count}} characters"
+    "max": "At most {{count}} characters",
+    "phone": "Invalid number: use international format, e.g. +1 555 123 4567"
   },
   "notFound": {
     "title": "This screen does not exist",

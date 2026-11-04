@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { noteSchema, signInSchema } from '@/lib/validation';
+import { normalizePhone, noteSchema, phoneSchema, signInSchema } from '@/lib/validation';
 
 describe('схемы форм', () => {
   it('вход: неверная почта и короткий пароль', () => {
@@ -15,5 +15,16 @@ describe('схемы форм', () => {
 
   it('заметка: пустой заголовок не проходит', () => {
     expect(noteSchema.safeParse({ title: '   ', body: '' }).success).toBe(false);
+  });
+});
+
+describe('телефон', () => {
+  it('номер приводится к международному формату', () => {
+    expect(normalizePhone('8 (999) 123-45-67')).toBe('+79991234567');
+    expect(normalizePhone('+7 999 123 45 67')).toBe('+79991234567');
+  });
+  it('короткий номер не проходит', () => {
+    expect(phoneSchema.safeParse({ phone: '+7 999' }).success).toBe(false);
+    expect(phoneSchema.safeParse({ phone: '8 999 123-45-67' }).success).toBe(true);
   });
 });

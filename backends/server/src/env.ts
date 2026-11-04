@@ -20,6 +20,23 @@ const schema = z.object({
     .transform((s) => s.split(',').map((x) => x.trim().toUpperCase()).filter(Boolean)),
   RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(120),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  // Способы входа: провайдер включается, когда заданы его ключи (см. AUTH.md)
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  APPLE_CLIENT_ID: z.string().optional(),
+  APPLE_CLIENT_SECRET: z.string().optional(),
+  APPLE_APP_BUNDLE_IDENTIFIER: z.string().optional(),
+  YANDEX_CLIENT_ID: z.string().optional(),
+  YANDEX_CLIENT_SECRET: z.string().optional(),
+  VK_CLIENT_ID: z.string().optional(),
+  VK_CLIENT_SECRET: z.string().optional(),
+  // Вход по телефону (код по SMS): off | console | smsru | twilio
+  SMS_PROVIDER: z.enum(['off', 'console', 'smsru', 'twilio']).default('console'),
+  SMS_SENDER: z.string().optional(),
+  SMSRU_API_ID: z.string().optional(),
+  TWILIO_ACCOUNT_SID: z.string().optional(),
+  TWILIO_AUTH_TOKEN: z.string().optional(),
+  TWILIO_FROM: z.string().optional(),
 });
 
 const parsed = schema.safeParse(process.env);

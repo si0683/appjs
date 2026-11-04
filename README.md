@@ -37,6 +37,7 @@ npm create appjs@latest my-app
 | Секреты | expo-secure-store (Keychain / Keystore) |
 | Списки, анимации | FlashList · Reanimated 4 · Gesture Handler · sonner-native |
 | Языки | i18next · expo-localization: ленивая загрузка языков, письмо справа налево, CSV для переводчиков |
+| Вход | почта и пароль, телефон (код по SMS: SMS.ru, Twilio), Google, Apple, Яндекс ID, VK ID — Better Auth на своём сервере или Supabase |
 | Бэкенд (по выбору) | свой сервер: Hono · PostgreSQL · Redis · BullMQ · Better Auth · WebSocket · Docker (образ в GHCR) — или Supabase |
 | Качество | Jest + Testing Library · ESLint · Prettier |
 | Сборка | EAS Build / Submit / Update |

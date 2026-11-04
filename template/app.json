@@ -12,7 +12,8 @@
       "bundleIdentifier": "com.example.appjs",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "usesAppleSignIn": true
     },
     "android": {
       "package": "com.example.appjs",
@@ -69,7 +70,8 @@
       "expo-secure-store",
       "expo-sqlite",
       "expo-web-browser",
-      "expo-sharing"
+      "expo-sharing",
+      "expo-apple-authentication"
     ],
     "experiments": {
       "typedRoutes": true,

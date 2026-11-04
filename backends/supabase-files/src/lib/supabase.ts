@@ -16,6 +16,8 @@ export const supabase = createClient(url, key, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
+    // Вход через Google / Apple в браузере — с кодом подтверждения (PKCE)
+    flowType: 'pkce',
   },
 });
 

@@ -35,6 +35,7 @@ npx expo export --platform android --platform ios   # проверка, что �
 - Формы — react-hook-form + zod; схемы в `src/lib/validation.ts`, поле — `<FormField>`.
 - Локальная база — Drizzle + expo-sqlite: схема `src/db/schema.ts`, запросы — `src/db/<таблица>.ts`, экраны SQL не пишут. Миграции в `src/db/migrations/` генерирует drizzle-kit — руками не править.
 - Живые потоки (WebSocket) — только через `throttleLatest` / `batchByKey` (`src/lib/throttle.ts`): не больше 4–10 обновлений экрана в секунду.
+- Вход — только через `useAuth` (`signIn`, `signUp`, `sendPhoneCode`, `verifyPhoneCode`, `signInWith('google' | 'apple' | 'yandex' | 'vk')`, `methods()`); кнопки — только для включённых способов. В iOS при любом внешнем входе нужен и Apple (правило 4.8, `STORES.md`). Ключи провайдеров — в `server/.env`, не в приложении.
 - Бэкенд — по выбору при создании (`--backend`): `server/` (свой сервер, свой README) или `supabase/`. Вход — только через `useAuth`, заголовки — `authHeaders()`; секреты сервера и ключи бирж — никогда в приложении.
 - Длинные списки — `FlashList`, не `ScrollView` + `map`; таблицы — `DataTable` (TanStack Table).
 - **Деньги, цены, количества — только Decimal** (`D()` из `src/lib/decimal.ts`), хранить строками; `number` — только для статистики и графиков.

@@ -121,7 +121,7 @@ export default function SettingsScreen() {
                   <Text>{user.name.slice(0, 2).toUpperCase()}</Text>
                 </AvatarFallback>
               </Avatar>
-              <Text className="flex-1">{t('settings.signedInAs', { email: user.email })}</Text>
+              <Text className="flex-1">{t('settings.signedInAs', { email: user.email || user.phone || user.name })}</Text>
             </View>
             <Button variant="outline" onPress={signOut}>
               <Icon as={LogOut} />
