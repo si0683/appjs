@@ -6,7 +6,10 @@ import { dirname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
 try {
-  const src = join(dirname(require.resolve('canvaskit-wasm/package.json')), 'bin/full/canvaskit.wasm');
+  const src = join(
+    dirname(require.resolve('canvaskit-wasm/package.json')),
+    'bin/full/canvaskit.wasm'
+  );
   if (!existsSync('public')) mkdirSync('public');
   copyFileSync(src, 'public/canvaskit.wasm');
 } catch (e) {

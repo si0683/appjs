@@ -49,6 +49,8 @@ cd template && npm install && npm start   # шаблон — обычное ра
 npm run check                             # в template/: типы, линтер, тесты
 ```
 
+Требования магазинов (Google Play, App Store, RuStore и др.) с официальными ссылками — [STORES.md](STORES.md); проверка проекта — `npm run store:check`.
+
 Правила для ИИ-агентов — [AGENTS.md](AGENTS.md). ТЗ-заполнялка для приложения — [PROMT.md](PROMT.md).
 
 MIT

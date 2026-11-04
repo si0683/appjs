@@ -32,34 +32,34 @@
 
 ## Стек
 
-| Задача             | Библиотека                                                                                                 |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- |
-| Платформа          | [Expo SDK 58](https://docs.expo.dev) + React Native 0.88 + React 19 + TypeScript                           |
-| Экраны, навигация  | [Expo Router](https://docs.expo.dev/router/introduction/) — файл = экран                                   |
-| Компоненты         | [React Native Reusables](https://reactnativereusables.com) — shadcn/ui для телефона                        |
-| Стили              | [Uniwind](https://docs.uniwind.dev) — Tailwind 4 в React Native, светлая/тёмная тема                       |
-| Иконки             | [Lucide](https://lucide.dev) (`lucide-react-native`)                                                       |
-| Данные с сервера   | [TanStack Query](https://tanstack.com/query) — кэш, повтор, обновление; WebSocket с переподключением |
-| Биржевые графики   | [TradingView Lightweight Charts](https://tradingview.github.io/lightweight-charts/) — свечи, объём, индикаторы, зум (Expo DOM component) |
+| Задача             | Библиотека                                                                                                                                                              |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Платформа          | [Expo SDK 58](https://docs.expo.dev) + React Native 0.88 + React 19 + TypeScript                                                                                        |
+| Экраны, навигация  | [Expo Router](https://docs.expo.dev/router/introduction/) — файл = экран                                                                                                |
+| Компоненты         | [React Native Reusables](https://reactnativereusables.com) — shadcn/ui для телефона                                                                                     |
+| Стили              | [Uniwind](https://docs.uniwind.dev) — Tailwind 4 в React Native, светлая/тёмная тема                                                                                    |
+| Иконки             | [Lucide](https://lucide.dev) (`lucide-react-native`)                                                                                                                    |
+| Данные с сервера   | [TanStack Query](https://tanstack.com/query) — кэш, повтор, обновление; WebSocket с переподключением                                                                    |
+| Биржевые графики   | [TradingView Lightweight Charts](https://tradingview.github.io/lightweight-charts/) — свечи, объём, индикаторы, зум (Expo DOM component)                                |
 | Графики аналитики  | [Victory Native XL](https://nearform.com/open-source/victory-native/) на [Skia](https://shopify.github.io/react-native-skia/) — линии, области, столбцы, кольца, 60 fps |
-| Деньги и точность  | [decimal.js](https://mikemcl.github.io/decimal.js/) — без ошибок 0.1 + 0.2, суммы хранятся строками |
-| Математика         | [mathjs](https://mathjs.org) — выражения, матрицы, единицы, статистика |
-| Индикаторы         | [trading-signals](https://github.com/bennycode/trading-signals) — EMA, RSI, Bollinger, MACD, ATR и ещё 100+ |
-| Статистика сделок  | как в журнале [OsEngine](https://github.com/AlexWan/OsEngine) + CAGR, Сортино, волатильность (`src/lib/deal-stats.ts`, `finance.ts`) |
-| Таблицы            | [TanStack Table](https://tanstack.com/table) — сортировка, фильтры, группировка |
-| Экспорт / импорт   | [SheetJS](https://sheetjs.com) (Excel), [Papa Parse](https://www.papaparse.com) (CSV), expo-print (PDF), expo-sharing |
-| Даты               | [date-fns](https://date-fns.org) |
-| Состояние          | [zustand](https://zustand.docs.pmnd.rs) + сохранение на устройстве                                         |
-| Формы и проверка   | [react-hook-form](https://react-hook-form.com) + [zod](https://zod.dev)                                    |
-| Локальная база     | [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/) + [Drizzle ORM](https://orm.drizzle.team) |
-| Секреты, токены    | expo-secure-store (Keychain / Keystore)                                                                    |
-| Списки             | [FlashList](https://shopify.github.io/flash-list/)                                                         |
-| Анимации, жесты    | Reanimated 4 + Gesture Handler                                                                             |
-| Уведомления в app  | [sonner-native](https://github.com/gunnartorfis/sonner-native)                                             |
-| Языки              | i18next + react-i18next + expo-localization                                                                |
-| Вибрация, картинки | expo-haptics, expo-image                                                                                   |
-| Тесты, качество    | Jest (jest-expo) + Testing Library, ESLint, Prettier                                                       |
-| Сборка, публикация | EAS Build / Submit / Update                                                                                |
+| Деньги и точность  | [decimal.js](https://mikemcl.github.io/decimal.js/) — без ошибок 0.1 + 0.2, суммы хранятся строками                                                                     |
+| Математика         | [mathjs](https://mathjs.org) — выражения, матрицы, единицы, статистика                                                                                                  |
+| Индикаторы         | [trading-signals](https://github.com/bennycode/trading-signals) — EMA, RSI, Bollinger, MACD, ATR и ещё 100+                                                             |
+| Статистика сделок  | как в журнале [OsEngine](https://github.com/AlexWan/OsEngine) + CAGR, Сортино, волатильность (`src/lib/deal-stats.ts`, `finance.ts`)                                    |
+| Таблицы            | [TanStack Table](https://tanstack.com/table) — сортировка, фильтры, группировка                                                                                         |
+| Экспорт / импорт   | [SheetJS](https://sheetjs.com) (Excel), [Papa Parse](https://www.papaparse.com) (CSV), expo-print (PDF), expo-sharing                                                   |
+| Даты               | [date-fns](https://date-fns.org)                                                                                                                                        |
+| Состояние          | [zustand](https://zustand.docs.pmnd.rs) + сохранение на устройстве                                                                                                      |
+| Формы и проверка   | [react-hook-form](https://react-hook-form.com) + [zod](https://zod.dev)                                                                                                 |
+| Локальная база     | [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/) + [Drizzle ORM](https://orm.drizzle.team)                                                              |
+| Секреты, токены    | expo-secure-store (Keychain / Keystore)                                                                                                                                 |
+| Списки             | [FlashList](https://shopify.github.io/flash-list/)                                                                                                                      |
+| Анимации, жесты    | Reanimated 4 + Gesture Handler                                                                                                                                          |
+| Уведомления в app  | [sonner-native](https://github.com/gunnartorfis/sonner-native)                                                                                                          |
+| Языки              | i18next + react-i18next + expo-localization                                                                                                                             |
+| Вибрация, картинки | expo-haptics, expo-image                                                                                                                                                |
+| Тесты, качество    | Jest (jest-expo) + Testing Library, ESLint, Prettier                                                                                                                    |
+| Сборка, публикация | EAS Build / Submit / Update                                                                                                                                             |
 
 ## Где что лежит
 
@@ -122,6 +122,10 @@ eas.json               профили сборки EAS
 ## Веб-версия
 
 `npm run web` — для отладки вёрстки. Графики Skia в браузере грузят `public/canvaskit.wasm` (копируется сам при `npm install`). База SQLite в браузере работает через WebAssembly и требует заголовков COOP/COEP (уже настроены в `metro.config.js` и `app.json`); при первом открытии адрес на секунду сменится на `/index.html` — так задумано.
+
+## Магазины приложений
+
+Требования Google Play, App Store, RuStore, AppGallery, Galaxy Store, Amazon, F-Droid — [STORES.md](STORES.md), только официальные ссылки. Уже сделано в шаблоне: targetSdk 36 (Google Play с 31.08.2026), AAB для Google Play, удаление аккаунта и ссылка на политику конфиденциальности в настройках (адреса — `app.json` → `expo.extra.privacyPolicyUrl`, `deleteAccountUrl`). Перед отправкой: `npm run store:check` + чек-лист из STORES.md.
 
 ## Сначала ТЗ
 

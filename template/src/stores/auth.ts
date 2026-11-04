@@ -10,6 +10,8 @@ type AuthState = {
   user: User | null;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
+  /** Удаление аккаунта — обязательно в App Store и Google Play, если есть регистрация. */
+  deleteAccount: () => Promise<void>;
 };
 
 // Демо-вход без сервера. Для настоящего входа замените тело signIn
@@ -25,6 +27,12 @@ export const useAuth = create<AuthState>()(
         set({ token: `demo-${Date.now()}`, user: { email, name } });
       },
       signOut: () => set({ token: null, user: null }),
+      // Демо: просто выходим. В реальном приложении — запрос на сервер
+      // (удалить пользователя и его данные), потом выход.
+      deleteAccount: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        set({ token: null, user: null });
+      },
     }),
     {
       name: 'auth',

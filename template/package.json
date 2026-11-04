@@ -22,7 +22,8 @@
     "build:prod": "npx eas-cli@latest build --profile production",
     "submit": "npx eas-cli@latest submit",
     "update": "npx eas-cli@latest update",
-    "postinstall": "node scripts/skia-web.mjs"
+    "postinstall": "node scripts/skia-web.mjs",
+    "store:check": "node scripts/store-check.mjs"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",

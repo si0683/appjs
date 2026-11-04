@@ -59,6 +59,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "privacyPolicyUrl": "",
+      "deleteAccountUrl": "",
+      "supportEmail": "support@example.com"
     }
   }
 }

@@ -123,7 +123,9 @@ ${bold("Дальше:")}
   ${pm} run tunnel       ${dim("# то же через интернет, если Wi-Fi/брандмауэр мешают")}
   ${pm} run check        ${dim("# типы, линтер, тесты — перед коммитом")}
 
+Сначала ТЗ: TechnicalSpecification/ (платформа и магазины — обязательно)
 Сборка для магазинов (без Mac): ${pm} run build:preview → ${pm} run build:prod → ${pm} run submit
+Требования магазинов: STORES.md · проверка: ${pm} run store:check
 Как устроен проект и рецепты: README.md
 `)
 

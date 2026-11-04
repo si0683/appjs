@@ -1,11 +1,33 @@
 import Constants from 'expo-constants';
 import { Link } from 'expo-router';
-import { LogOut, Monitor, Moon, Sun, type LucideIcon } from 'lucide-react-native';
+import * as WebBrowser from 'expo-web-browser';
+import {
+  LogOut,
+  Mail,
+  Monitor,
+  Moon,
+  ShieldCheck,
+  Sun,
+  Trash2,
+  type LucideIcon,
+} from 'lucide-react-native';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
+import { toast } from 'sonner-native';
 
 import { Screen } from '@/components/app/screen';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +36,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { APP } from '@/config/app';
 import { LANGUAGES, type Language } from '@/i18n';
 import { tap } from '@/lib/haptics';
 import { useAuth } from '@/stores/auth';
@@ -32,7 +55,7 @@ const THEMES: {
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const settings = useSettings();
-  const { user, signOut } = useAuth();
+  const { user, signOut, deleteAccount } = useAuth();
 
   return (
     <Screen>
@@ -104,6 +127,34 @@ export default function SettingsScreen() {
               <Icon as={LogOut} />
               <Text>{t('settings.signOut')}</Text>
             </Button>
+            {/* Удаление аккаунта внутри приложения — требование App Store и Google Play */}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost">
+                  <Icon as={Trash2} className="text-destructive" />
+                  <Text className="text-destructive">{t('settings.deleteAccount')}</Text>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('settings.deleteAccountAsk')}</AlertDialogTitle>
+                  <AlertDialogDescription>{t('settings.deleteAccountHint')}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>
+                    <Text>{t('settings.cancel')}</Text>
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onPress={async () => {
+                      await deleteAccount();
+                      tap('warning');
+                      toast(t('settings.accountDeleted'));
+                    }}>
+                    <Text>{t('settings.deleteAccount')}</Text>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </View>
         ) : (
           <View className="gap-4">
@@ -115,6 +166,24 @@ export default function SettingsScreen() {
             </Link>
           </View>
         )}
+      </Section>
+
+      {/* Политика конфиденциальности внутри приложения — требование RuStore и Google Play */}
+      <Section title={t('settings.about')}>
+        {APP.privacyPolicyUrl ? (
+          <Button
+            variant="outline"
+            onPress={() => void WebBrowser.openBrowserAsync(APP.privacyPolicyUrl)}>
+            <Icon as={ShieldCheck} />
+            <Text>{t('settings.privacy')}</Text>
+          </Button>
+        ) : null}
+        <Button
+          variant="outline"
+          onPress={() => void Linking.openURL(`mailto:${APP.supportEmail}`)}>
+          <Icon as={Mail} />
+          <Text>{t('settings.support')}</Text>
+        </Button>
       </Section>
 
       <Text variant="muted" className="text-center">
