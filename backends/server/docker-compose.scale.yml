@@ -1,0 +1,53 @@
+# Несколько копий API за балансировщиком + PgBouncer:
+#   npm run up:scale               (по умолчанию 4 копии API и 2 worker)
+#   API_REPLICAS=8 npm run up:scale
+# = docker compose -f docker-compose.yml -f docker-compose.scale.yml up -d
+#
+#   клиенты → lb (Caddy, :8080) → api × N → pgbouncer → db
+#                                         ↘ redis (pub/sub, кэш, лимиты, очереди)
+# WebSocket проходит через балансировщик; копии раздают события из Redis.
+
+services:
+  # Балансировщик: находит все копии api через DNS Docker, раздаёт запросы
+  # тем, у кого меньше соединений, и исключает копии, у которых /ready не отвечает
+  lb:
+    image: caddy:2.11-alpine
+    volumes: ['./monitoring/Caddyfile:/etc/caddy/Caddyfile:ro']
+    ports: ['${API_PORT:-8080}:8080']
+    depends_on: [api]
+    restart: unless-stopped
+
+  # Пул соединений: сотни соединений копий API → несколько десятков к PostgreSQL
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.26.1-p0
+    environment:
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app
+      AUTH_TYPE: scram-sha-256
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: ${PGBOUNCER_MAX_CLIENT_CONN:-2000}
+      DEFAULT_POOL_SIZE: ${PGBOUNCER_POOL_SIZE:-40}
+    depends_on:
+      db: { condition: service_healthy }
+    restart: unless-stopped
+
+  api:
+    ports: !reset []
+    deploy:
+      replicas: ${API_REPLICAS:-4}
+    environment:
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@pgbouncer:5432/app
+      # PgBouncer в режиме transaction не поддерживает подготовленные запросы
+      DB_PREPARE: 'false'
+      DB_POOL_MAX: ${DB_POOL_MAX:-20}
+      TRUST_PROXY: 'true'
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      pgbouncer: { condition: service_started }
+
+  worker:
+    deploy:
+      replicas: ${WORKER_REPLICAS:-2}
+    environment:
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@pgbouncer:5432/app
+      DB_PREPARE: 'false'

@@ -15,6 +15,13 @@
       "when": 1793753029105,
       "tag": "0001_phone",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793769173645,
+      "tag": "0002_trades_index",
+      "breakpoints": true
     }
   ]
 }

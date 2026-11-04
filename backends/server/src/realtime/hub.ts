@@ -1,6 +1,7 @@
 import type { WSContext } from 'hono/ws';
 
 import { log } from '../lib/logger.js';
+import { wsClients, wsDropped, wsMessages, wsTopics } from '../lib/metrics.js';
 import { redis, subscriber } from '../lib/redis.js';
 import { CHANNEL } from './feed.js';
 import { isTopic, type MarketEvent } from './market.js';
@@ -20,10 +21,19 @@ const byTopic = new Map<string, Set<Client>>();
 
 export const stats = () => ({ clients: clients.size, topics: byTopic.size });
 
+function updateGauges() {
+  wsClients.set(clients.size);
+  wsTopics.set(byTopic.size);
+}
+
 function send(client: Client, payload: string) {
   const raw = client.ws.raw as { bufferedAmount?: number } | undefined;
-  if ((raw?.bufferedAmount ?? 0) > MAX_BUFFER) return;
+  if ((raw?.bufferedAmount ?? 0) > MAX_BUFFER) {
+    wsDropped.inc();
+    return;
+  }
   client.ws.send(payload);
+  wsMessages.inc();
 }
 
 export async function startHub() {
@@ -46,6 +56,7 @@ export function socketHandlers() {
     onOpen(_: Event, ws: WSContext) {
       client.ws = ws;
       clients.add(client);
+      updateGauges();
     },
     async onMessage(event: MessageEvent, ws: WSContext) {
       let msg: { op?: string; topics?: unknown };
@@ -62,6 +73,7 @@ export function socketHandlers() {
           if (!byTopic.has(t)) byTopic.set(t, new Set());
           byTopic.get(t)!.add(client);
         }
+        updateGauges();
         // Сразу отдаём последнее известное значение — экран не ждёт следующего тика
         if (fresh.length) {
           const last = await redis.hmget('market:last', ...fresh);
@@ -83,6 +95,7 @@ export function socketHandlers() {
         set?.delete(client);
         if (set && !set.size) byTopic.delete(t);
       }
+      updateGauges();
     },
     onError(err: Event) {
       log.debug({ err }, 'ws: ошибка клиента');

@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import { env } from '../env.js';
 import { log } from '../lib/logger.js';
+import { feedLeader, feedPublished } from '../lib/metrics.js';
 import { redis } from '../lib/redis.js';
 import { fromStream, streamsFor, WS, type MarketEvent } from './market.js';
 
@@ -61,6 +62,7 @@ function connect() {
       for (const ev of batch) pipe.hset('market:last', ev.topic, JSON.stringify(ev.data));
       pipe.publish(CHANNEL, JSON.stringify(batch));
       await pipe.exec();
+      feedPublished.inc(batch.length);
     }, PUBLISH_EVERY_MS)
   );
 }
@@ -71,6 +73,7 @@ export function startFeed() {
   const tick = async () => {
     try {
       const leader = await becomeLeader();
+      feedLeader.set(leader ? 1 : 0);
       if (leader && !socket) connect();
       if (!leader && socket) socket.close();
     } catch (e) {

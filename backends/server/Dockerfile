@@ -20,5 +20,6 @@ COPY --chown=node:node drizzle ./drizzle
 COPY --chown=node:node package.json ./
 EXPOSE 8080
 HEALTHCHECK --interval=15s --timeout=3s --start-period=20s CMD wget -qO- http://127.0.0.1:8080/health || exit 1
-# Миграции → API. Для worker команда переопределяется: node dist/jobs/worker.js
-CMD ["sh", "-c", "node dist/db/migrate.js && node dist/index.js"]
+# Миграции → API (трассировка — если задан OTEL_EXPORTER_OTLP_ENDPOINT).
+# Для worker команда переопределяется: node --import ./dist/telemetry.js dist/jobs/worker.js
+CMD ["sh", "-c", "node dist/db/migrate.js && node --import ./dist/telemetry.js dist/index.js"]

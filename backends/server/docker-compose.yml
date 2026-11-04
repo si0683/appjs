@@ -1,7 +1,16 @@
-# Локальный запуск всего сервера: npm run up  (остановить: npm run down)
+# Сервер целиком: npm run up  (остановить: npm run down)
+#   + мониторинг (Prometheus, Grafana, Jaeger):  npm run up:monitoring
+#   + несколько копий API, балансировщик, PgBouncer: npm run up:scale (docker-compose.scale.yml)
 # База и Redis наружу не открыты — к ним ходит только API внутри сети Docker.
-# Для разработки без Docker поднимите только db и redis: docker compose up -d db redis
-# (тогда они доступны на портах 5433 и 6380 — см. профиль dev ниже).
+# Для разработки без Docker: docker compose --profile dev up -d db redis db-port redis-port
+# (база :5433, Redis :6380).
+
+x-server-env: &server-env
+  NODE_ENV: production
+  DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app
+  REDIS_URL: redis://redis:6379
+  BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-to-a-long-random-string-32-chars}
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
 
 services:
   db:
@@ -10,6 +19,7 @@ services:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
       POSTGRES_DB: app
+    command: ['postgres', '-c', 'max_connections=${POSTGRES_MAX_CONNECTIONS:-200}']
     volumes: [db:/var/lib/postgresql/data]
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U app']
@@ -27,36 +37,102 @@ services:
       retries: 10
     restart: unless-stopped
 
-  api:
+  # Миграции — один раз перед стартом API (а не в каждой копии одновременно)
+  migrate:
     build: .
     image: ${SERVER_IMAGE:-appjs-server:local}
+    command: ['node', 'dist/db/migrate.js']
     env_file: [{ path: .env, required: false }]
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app
-      REDIS_URL: redis://redis:6379
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-to-a-long-random-string-32-chars}
-    ports: ['${API_PORT:-8080}:8080']
+    environment: *server-env
     depends_on:
       db: { condition: service_healthy }
+    restart: 'no'
+
+  api:
+    image: ${SERVER_IMAGE:-appjs-server:local}
+    command: ['node', '--import', './dist/telemetry.js', 'dist/index.js']
+    env_file: [{ path: .env, required: false }]
+    environment: *server-env
+    ports: ['${API_PORT:-8080}:8080']
+    depends_on:
+      migrate: { condition: service_completed_successfully }
       redis: { condition: service_healthy }
     restart: unless-stopped
 
   worker:
     image: ${SERVER_IMAGE:-appjs-server:local}
-    command: ['node', 'dist/jobs/worker.js']
+    command: ['node', '--import', './dist/telemetry.js', 'dist/jobs/worker.js']
     env_file: [{ path: .env, required: false }]
     environment:
-      NODE_ENV: production
-      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app
-      REDIS_URL: redis://redis:6379
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-to-a-long-random-string-32-chars}
+      <<: *server-env
       MARKET_FEED: 'off'
+      OTEL_SERVICE_NAME: appjs-worker
     depends_on:
-      api: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
     restart: unless-stopped
 
-  # Порты базы и Redis для разработки на компьютере (npm run dev): docker compose --profile dev up -d
+  # ---- Мониторинг: npm run up:monitoring
+  #   Grafana http://localhost:3001 (admin / admin) → папка AppJS → «AppJS — сервер»
+  #   Prometheus http://localhost:9090 · Jaeger (трассы) http://localhost:16686
+  #   Трассы: в .env OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318
+  prometheus:
+    profiles: [monitoring]
+    image: prom/prometheus:v3
+    volumes: ['./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro', 'prometheus:/prometheus']
+    ports: ['${PROMETHEUS_PORT:-9090}:9090']
+    restart: unless-stopped
+
+  grafana:
+    profiles: [monitoring]
+    image: grafana/grafana:13.2
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/appjs.json
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana:/var/lib/grafana
+    ports: ['${GRAFANA_PORT:-3001}:3000']
+    depends_on: [prometheus]
+    restart: unless-stopped
+
+  jaeger:
+    profiles: [monitoring]
+    image: jaegertracing/jaeger:2.22.0
+    ports: ['${JAEGER_PORT:-16686}:16686']
+    restart: unless-stopped
+
+  postgres-exporter:
+    profiles: [monitoring]
+    image: prometheuscommunity/postgres-exporter:v0.20.1
+    environment:
+      DATA_SOURCE_NAME: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app?sslmode=disable
+    depends_on: [db]
+    restart: unless-stopped
+
+  redis-exporter:
+    profiles: [monitoring]
+    image: oliver006/redis_exporter:v1.96.0-alpine
+    environment:
+      REDIS_ADDR: redis://redis:6379
+    depends_on: [redis]
+    restart: unless-stopped
+
+  # ---- Нагрузочные тесты k6: npm run load:http · load:ws (LOAD.md). На время прогона
+  # поднимите RATE_LIMIT_PER_MINUTE в .env — иначе лимит на IP отклонит тест.
+  k6:
+    profiles: [load]
+    image: grafana/k6:2.3.0
+    volumes: ['./load:/scripts:ro']
+    environment:
+      BASE: ${LOAD_TARGET:-http://api:8080}
+      MAX_RPS: ${MAX_RPS:-2000}
+      STAGE: ${STAGE:-30s}
+      CLIENTS: ${CLIENTS:-2000}
+      HOLD: ${HOLD:-60}
+
+  # ---- Порты базы и Redis для разработки на компьютере (npm run dev)
   db-port:
     profiles: [dev]
     image: alpine/socat
@@ -73,3 +149,5 @@ services:
 volumes:
   db:
   redis:
+  prometheus:
+  grafana:

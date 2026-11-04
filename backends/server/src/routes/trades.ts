@@ -1,5 +1,5 @@
 import { zValidator } from '@hono/zod-validator';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, lt } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { z } from 'zod';
 
@@ -23,15 +23,32 @@ export const tradeInput = z.object({
 
 export const tradesRoute = new Hono<AuthEnv>()
   .use(requireUser)
-  .get('/', async (c) => {
-    const rows = await db
-      .select()
-      .from(trades)
-      .where(eq(trades.userId, c.var.user.id))
-      .orderBy(desc(trades.createdAt))
-      .limit(1000);
-    return c.json(rows);
-  })
+  // Постранично: ?limit=50 (до 200), следующая страница — ?before=<id последней записи>.
+  // Без этого список растёт вместе с журналом и каждый ответ становится тяжелее.
+  .get(
+    '/',
+    zValidator(
+      'query',
+      z.object({
+        limit: z.coerce.number().int().min(1).max(200).default(50),
+        before: z.coerce.number().int().positive().optional(),
+      })
+    ),
+    async (c) => {
+      const { limit, before } = c.req.valid('query');
+      const rows = await db
+        .select()
+        .from(trades)
+        .where(
+          before
+            ? and(eq(trades.userId, c.var.user.id), lt(trades.id, before))
+            : eq(trades.userId, c.var.user.id)
+        )
+        .orderBy(desc(trades.id))
+        .limit(limit);
+      return c.json({ items: rows, next: rows.length === limit ? rows[rows.length - 1].id : null });
+    }
+  )
   .post('/', zValidator('json', z.object({ items: z.array(tradeInput).min(1).max(500) })), async (c) => {
     const { items } = c.req.valid('json');
     const rows = await db

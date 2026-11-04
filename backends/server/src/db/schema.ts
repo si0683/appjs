@@ -24,5 +24,6 @@ export const trades = pgTable(
     fee: numeric('fee', { precision: 38, scale: 18 }).notNull().default('0'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('trades_user_time_idx').on(t.userId, t.createdAt)]
+  // Список «свои сделки, новые сначала» — по индексу, без сортировки всей таблицы
+  (t) => [index('trades_user_id_idx').on(t.userId, t.id)]
 );

@@ -7,6 +7,7 @@ import { expo } from '@better-auth/expo';
 import { db } from './db/client.js';
 import * as schema from './db/schema.js';
 import { env } from './env.js';
+import { authStorage } from './lib/redis.js';
 import { isPhone, sendSms } from './lib/sms.js';
 
 // Вход и аккаунты — Better Auth. Способы входа включаются ключами в .env:
@@ -49,6 +50,8 @@ const options = {
   baseURL: env.PUBLIC_URL,
   secret: env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, { provider: 'pg', schema }),
+  // Лимиты и служебные записи — в Redis, общие для всех копий за балансировщиком
+  secondaryStorage: authStorage,
   emailAndPassword: { enabled: true, minPasswordLength: 8 },
   user: { deleteUser: { enabled: true } },
   account: {
@@ -89,6 +92,7 @@ const options = {
   ],
   rateLimit: {
     enabled: true,
+    storage: 'secondary-storage',
     window: 60,
     max: 30,
     // SMS стоят денег и привлекают ботов: не больше 3 кодов в 10 минут с одного адреса

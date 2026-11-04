@@ -5,8 +5,10 @@ import { secureHeaders } from 'hono/secure-headers';
 import { auth, authMethods } from './auth.js';
 import { sql } from './db/client.js';
 import { env } from './env.js';
+import { jobs } from './jobs/queue.js';
 import { log } from './lib/logger.js';
-import { rateLimit } from './lib/rate-limit.js';
+import { httpMetrics, queueJobs, registry } from './lib/metrics.js';
+import { rateLimit, smsLimit } from './lib/rate-limit.js';
 import { redis } from './lib/redis.js';
 import { stats } from './realtime/hub.js';
 import { market } from './routes/market.js';
@@ -16,6 +18,7 @@ import { tradesRoute } from './routes/trades.js';
 // HTTP-приложение (без запуска сервера — так его удобно тестировать).
 export const app = new Hono();
 
+app.use(httpMetrics);
 app.use(secureHeaders());
 app.use(
   '/api/*',
@@ -44,8 +47,19 @@ app.get('/ready', async (c) => {
   }
 });
 
+// Метрики для Prometheus. Снаружи закройте прокси или задайте METRICS_TOKEN
+app.get('/metrics', async (c) => {
+  if (env.METRICS_TOKEN && c.req.header('authorization') !== `Bearer ${env.METRICS_TOKEN}`) {
+    return c.text('unauthorized', 401);
+  }
+  const counts = await jobs.getJobCounts('waiting', 'active', 'delayed', 'failed', 'completed');
+  for (const [state, n] of Object.entries(counts)) queueJobs.set({ state }, n);
+  return c.text(await registry.metrics(), 200, { 'Content-Type': registry.contentType });
+});
+
 // Какие способы входа включены (по ключам в .env) — приложение показывает только их
 app.get('/api/auth-methods', (c) => c.json(authMethods));
+app.post('/api/auth/phone-number/send-otp', smsLimit);
 app.on(['GET', 'POST'], '/api/auth/*', (c) => auth.handler(c.req.raw));
 app.route('/api/market', market);
 app.route('/api/trades', tradesRoute);

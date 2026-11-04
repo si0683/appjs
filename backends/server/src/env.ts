@@ -19,7 +19,24 @@ const schema = z.object({
     .default('BTCUSDT,ETHUSDT')
     .transform((s) => s.split(',').map((x) => x.trim().toUpperCase()).filter(Boolean)),
   RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(120),
+  // true — сервер за своим прокси/балансировщиком: IP клиента из X-Forwarded-For.
+  // Без прокси держите false, иначе клиент подделает заголовок и обойдёт лимит
+  TRUST_PROXY: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  // /metrics: пусто — открыт (закройте снаружи прокси); иначе нужен заголовок Authorization: Bearer <токен>
+  METRICS_TOKEN: z.string().optional(),
+  // Трассировка OpenTelemetry: адрес OTLP (например http://jaeger:4318). Пусто — выключена
+  OTEL_EXPORTER_OTLP_ENDPOINT: z.string().optional(),
+  OTEL_SERVICE_NAME: z.string().default('appjs-server'),
+  // Пул соединений с PostgreSQL на одну копию; через PgBouncer — prepare выключен
+  DB_POOL_MAX: z.coerce.number().int().positive().default(20),
+  DB_PREPARE: z
+    .enum(['true', 'false'])
+    .default('true')
+    .transform((v) => v === 'true'),
   // Способы входа: провайдер включается, когда заданы его ключи (см. AUTH.md)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),

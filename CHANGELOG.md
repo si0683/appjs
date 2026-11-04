@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.5.0 — 2026-11-04
+
+Свой сервер (`--backend=server`) готов к большой нагрузке; цифры замерены — `server/LOAD.md`.
+
+- Метрики: `GET /metrics` (prom-client) — время ответа по маршрутам, задержка event loop, память, WebSocket (клиенты, сообщения, пропуски, лидер потока), очередь BullMQ, отказы лимита; закрывается `METRICS_TOKEN`.
+- Мониторинг: `npm run up:monitoring` — Prometheus (сам находит все копии API), Grafana с готовой панелью «AppJS — сервер», Jaeger, экспортёры PostgreSQL и Redis.
+- Трассы OpenTelemetry (`OTEL_EXPORTER_OTLP_ENDPOINT`): входящие запросы, запросы к бирже и Redis; без переменной не загружаются.
+- Масштабирование: `npm run up:scale` (`docker-compose.scale.yml`) — N копий API (`API_REPLICAS`) за Caddy (least_conn, проверка `/ready`), PgBouncer в режиме transaction (`DB_PREPARE=false`), несколько worker; миграции — отдельный сервис `migrate` один раз до старта.
+- Нагрузочные тесты k6: `load/http.js` (смесь запросов до `MAX_RPS`), `load/ws.js` (`CLIENTS` подключений WebSocket); `npm run load:http`, `load:ws`, `load:http:scale`, `load:ws:scale`.
+- Найдено тестами и исправлено:
+  - список сделок постранично (`?limit=50&before=<id>`, ответ `{ items, next }`), индекс `(user_id, id)` — миграция `0002_trades_index`;
+  - кэш рынка «отдать сразу, обновить в фоне» с одним запросом к бирже на копию (котировки p95 222 → 9 мс);
+  - лимит SMS общий для всех копий (Redis, по IP и по номеру), хранилище Better Auth в Redis, атомарный счётчик лимитов;
+  - `X-Forwarded-For` учитывается только при `TRUST_PROXY=true`.
+- Замер (Docker, 4 ядра): 1 копия — ~1150 запросов/с, p95 955 мс; 4 копии — пик 3000/с, p95 42 мс, 0 % ошибок; 2000 клиентов WebSocket — подключение p95 14 мс, 0 пропусков.
+
 ## 1.4.0 — 2026-11-04
 
 - Способы входа: почта и пароль, телефон с кодом по SMS, Google, Apple, Яндекс ID, VK ID.
