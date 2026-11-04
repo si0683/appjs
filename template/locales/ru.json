@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "AppJS"
+  },
+  "android": {
+    "app_name": "AppJS"
+  }
+}

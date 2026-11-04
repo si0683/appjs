@@ -1,5 +1,4 @@
 import '@/global.css';
-import '@/i18n';
 
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -10,6 +9,7 @@ import { View } from 'react-native';
 import { Providers } from '@/components/app/providers';
 import { Text } from '@/components/ui/text';
 import { useDatabase } from '@/db/client';
+import { i18nReady } from '@/i18n';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -18,6 +18,11 @@ void SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   // Перед первым экраном применяем миграции базы, потом убираем заставку.
   const { success, error } = useDatabase();
+  // Переводы языка телефона подгружаются до первого экрана
+  const [i18nOk, setI18nOk] = React.useState(false);
+  React.useEffect(() => {
+    void i18nReady.then(() => setI18nOk(true));
+  }, []);
   React.useEffect(() => {
     if (success || error) void SplashScreen.hideAsync();
   }, [success, error]);
@@ -29,7 +34,7 @@ export default function RootLayout() {
       </View>
     );
   }
-  if (!success) return null;
+  if (!success || !i18nOk) return null;
 
   return (
     <Providers>

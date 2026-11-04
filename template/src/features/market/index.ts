@@ -2,8 +2,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import { create } from 'zustand';
 
+import { batchByKey, throttleLatest } from '@/lib/throttle';
+
 import { binance } from './binance';
 import { demo } from './demo';
+import { server } from './server';
 import type { Candle, MarketSource, OrderBook, Ticker, Timeframe } from './types';
 
 export * from './types';
@@ -20,7 +23,11 @@ export const WATCHLIST = [
   'ADAUSDT',
 ];
 
-const SOURCES: Record<string, MarketSource> = { binance, demo };
+const SOURCES: Record<string, MarketSource> = { binance, demo, server };
+
+// Как часто живые данные попадают на экран (мс). Сокет может присылать сотни
+// сообщений в секунду — экран обновляется не чаще этого, промежуточные отбрасываются.
+export const UI_RATE = { tickers: 250, candles: 100, book: 250 };
 const preferred = SOURCES[process.env.EXPO_PUBLIC_MARKET_SOURCE ?? 'binance'] ?? binance;
 
 // Если биржа недоступна (нет сети, блокировка) — переключаемся на демо и
@@ -63,12 +70,22 @@ export function useTickers(symbols = WATCHLIST) {
   const ready = query.isSuccess;
   React.useEffect(() => {
     if (!ready) return;
-    return useMarketSource.getState().source.subscribe({ type: 'tickers', symbols }, (t) => {
-      const ticker = t as Ticker;
-      qc.setQueryData<Ticker[]>(key, (old) =>
-        old?.map((o) => (o.symbol === ticker.symbol ? ticker : o))
-      );
-    });
+    // Пачка тикеров за окно → одна запись в кэш → одна перерисовка списка
+    const push = batchByKey<Ticker>(
+      (t) => t.symbol,
+      (batch) => {
+        const bySymbol = new Map(batch.map((t) => [t.symbol, t]));
+        qc.setQueryData<Ticker[]>(key, (old) => old?.map((o) => bySymbol.get(o.symbol) ?? o));
+      },
+      UI_RATE.tickers
+    );
+    const off = useMarketSource
+      .getState()
+      .source.subscribe({ type: 'tickers', symbols }, (t) => push(t as Ticker));
+    return () => {
+      off();
+      push.cancel();
+    };
   }, [ready, key, qc, symbols]);
   return query;
 }
@@ -88,16 +105,22 @@ export function useCandles(symbol: string, tf: Timeframe, limit = 300) {
   const ready = query.isSuccess;
   React.useEffect(() => {
     if (!ready) return;
-    return useMarketSource
+    const push = throttleLatest<Candle>(
+      (candle) => setLive({ key: streamKey, candle }),
+      UI_RATE.candles
+    );
+    const off = useMarketSource
       .getState()
-      .source.subscribe({ type: 'candles', symbol, tf }, (c) =>
-        setLive({ key: streamKey, candle: c as Candle })
-      );
+      .source.subscribe({ type: 'candles', symbol, tf }, (c) => push(c as Candle));
+    return () => {
+      off();
+      push.cancel();
+    };
   }, [ready, symbol, tf, streamKey]);
   return { ...query, live: live?.key === streamKey ? live.candle : null };
 }
 
-/** Стакан заявок, обновляется раз в секунду. */
+/** Стакан заявок: живые обновления не чаще UI_RATE.book. */
 export function useOrderBook(symbol: string) {
   const id = useMarketSource((s) => s.source.id);
   const query = useQuery({
@@ -109,11 +132,17 @@ export function useOrderBook(symbol: string) {
   const ready = query.isSuccess;
   React.useEffect(() => {
     if (!ready) return;
-    return useMarketSource
+    const push = throttleLatest<OrderBook>(
+      (book) => setLive({ key: streamKey, book }),
+      UI_RATE.book
+    );
+    const off = useMarketSource
       .getState()
-      .source.subscribe({ type: 'book', symbol }, (b) =>
-        setLive({ key: streamKey, book: b as OrderBook })
-      );
+      .source.subscribe({ type: 'book', symbol }, (b) => push(b as OrderBook));
+    return () => {
+      off();
+      push.cancel();
+    };
   }, [ready, symbol, streamKey]);
   return { ...query, data: (live?.key === streamKey ? live.book : null) ?? query.data };
 }

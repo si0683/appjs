@@ -7,7 +7,7 @@ const extra = (Constants.expoConfig?.extra ?? {}) as Record<string, string | und
 export const APP = {
   name: 'AppJS',
   // Адрес вашего API. Задаётся в .env: EXPO_PUBLIC_API_URL=https://api.example.com
-  apiUrl: process.env.EXPO_PUBLIC_API_URL ?? 'https://dummyjson.com',
+  apiUrl: process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8080',
   // Требования магазинов (см. STORES.md) — задаются в app.json → expo.extra:
   // политика конфиденциальности (RuStore: на русском и внутри приложения),
   // страница удаления аккаунта (Google Play: удаление и по ссылке в интернете).

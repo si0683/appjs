@@ -48,10 +48,10 @@ export default function MarketScreen() {
             value={q}
             onChangeText={setQ}
             placeholder={t('market.search')}
-            className="pl-9"
+            className="ps-9"
             autoCapitalize="characters"
           />
-          <View pointerEvents="none" className="absolute top-0 bottom-0 left-3 justify-center">
+          <View pointerEvents="none" className="absolute start-3 top-0 bottom-0 justify-center">
             <Icon as={Search} className="size-4 text-muted-foreground" />
           </View>
         </View>

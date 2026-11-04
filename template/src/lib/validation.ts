@@ -5,7 +5,7 @@ import { z } from 'zod';
 // 'validation.min|6' превратится в «Минимум 6 символов».
 export const signInSchema = z.object({
   email: z.string().trim().min(1, 'validation.required').email('validation.email'),
-  password: z.string().min(6, 'validation.min|6'),
+  password: z.string().min(8, 'validation.min|8'),
 });
 export type SignInValues = z.infer<typeof signInSchema>;
 

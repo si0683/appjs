@@ -29,11 +29,13 @@ npx expo export --platform android --platform ios   # проверка, что �
 - UI — компоненты из `src/components/ui/` (React Native Reusables, shadcn-стиль). Новые — `npx shadcn@latest add https://reactnativereusables.com/r/uniwind/<имя>.json`. Не пишите свои кнопки/диалоги, если есть готовые.
 - Стили — классы Tailwind через **Uniwind** (`className`). Цвета только из темы (`bg-background`, `text-foreground`, `text-muted-foreground`, `bg-primary`, `border-border` …), без жёстких `#hex` — иначе сломается тёмная тема. Тема — `src/global.css`; для навигации те же цвета в `src/lib/theme.ts`. Условные классы — `cn()` из `@/lib/utils`.
 - Текст — только `<Text>` из `@/components/ui/text` (RN не позволяет текст вне `<Text>`). Иконки — `<Icon as={ИмяИзLucide} />`.
-- Все строки интерфейса — через `t('…')`, ключи в `src/i18n/ru.ts` (база) и `en.ts`. Тест `src/__tests__/i18n.test.ts` проверяет, что словари совпадают.
+- Все строки интерфейса — через `t('…')`, ключи в `src/i18n/locales/ru.json` (база) и остальных `*.json`; новый язык — `npm run i18n -- add <код>`; `npm run i18n -- check` ловит забытые ключи и текст без перевода. Числа, деньги, даты — через Intl с языком пользователя, не склеивать строки руками. Отступы — `ps-`/`pe-` (start/end), а не `pl-`/`pr-`, чтобы работало письмо справа налево.
 - Данные с сервера — TanStack Query + `api(path, zodSchema)` из `src/lib/api.ts`; хуки запросов — в `src/features/<раздел>/api.ts`.
 - Глобальное состояние — zustand в `src/stores/`. Настройки сохраняются через `kvStorage`, токены — только через `secureStorage` (`src/lib/storage.ts`).
 - Формы — react-hook-form + zod; схемы в `src/lib/validation.ts`, поле — `<FormField>`.
 - Локальная база — Drizzle + expo-sqlite: схема `src/db/schema.ts`, запросы — `src/db/<таблица>.ts`, экраны SQL не пишут. Миграции в `src/db/migrations/` генерирует drizzle-kit — руками не править.
+- Живые потоки (WebSocket) — только через `throttleLatest` / `batchByKey` (`src/lib/throttle.ts`): не больше 4–10 обновлений экрана в секунду.
+- Бэкенд — по выбору при создании (`--backend`): `server/` (свой сервер, свой README) или `supabase/`. Вход — только через `useAuth`, заголовки — `authHeaders()`; секреты сервера и ключи бирж — никогда в приложении.
 - Длинные списки — `FlashList`, не `ScrollView` + `map`; таблицы — `DataTable` (TanStack Table).
 - **Деньги, цены, количества — только Decimal** (`D()` из `src/lib/decimal.ts`), хранить строками; `number` — только для статистики и графиков.
 - Графики — только из `@/components/charts` (там же веб-версия, которая ждёт загрузки Skia). Цвета — `useChartTheme()`. `CandleChart` — Expo DOM component (`'use dom'`): пропсы только JSON-данные.

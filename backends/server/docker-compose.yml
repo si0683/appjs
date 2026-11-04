@@ -1,0 +1,75 @@
+# Локальный запуск всего сервера: npm run up  (остановить: npm run down)
+# База и Redis наружу не открыты — к ним ходит только API внутри сети Docker.
+# Для разработки без Docker поднимите только db и redis: docker compose up -d db redis
+# (тогда они доступны на портах 5433 и 6380 — см. профиль dev ниже).
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
+      POSTGRES_DB: app
+    volumes: [db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U app']
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes: [redis:/data]
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build: .
+    image: ${SERVER_IMAGE:-appjs-server:local}
+    env_file: [{ path: .env, required: false }]
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app
+      REDIS_URL: redis://redis:6379
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-to-a-long-random-string-32-chars}
+    ports: ['${API_PORT:-8080}:8080']
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  worker:
+    image: ${SERVER_IMAGE:-appjs-server:local}
+    command: ['node', 'dist/jobs/worker.js']
+    env_file: [{ path: .env, required: false }]
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app}@db:5432/app
+      REDIS_URL: redis://redis:6379
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-to-a-long-random-string-32-chars}
+      MARKET_FEED: 'off'
+    depends_on:
+      api: { condition: service_healthy }
+    restart: unless-stopped
+
+  # Порты базы и Redis для разработки на компьютере (npm run dev): docker compose --profile dev up -d
+  db-port:
+    profiles: [dev]
+    image: alpine/socat
+    command: tcp-listen:5432,fork,reuseaddr tcp-connect:db:5432
+    ports: ['5433:5432']
+    depends_on: [db]
+  redis-port:
+    profiles: [dev]
+    image: alpine/socat
+    command: tcp-listen:6379,fork,reuseaddr tcp-connect:redis:6379
+    ports: ['6380:6379']
+    depends_on: [redis]
+
+volumes:
+  db:
+  redis:

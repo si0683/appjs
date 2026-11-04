@@ -50,7 +50,22 @@
       ],
       "expo-font",
       "expo-image",
-      "expo-localization",
+      [
+        "expo-localization",
+        {
+          "supportsRTL": true,
+          "supportedLocales": {
+            "ios": [
+              "ru",
+              "en"
+            ],
+            "android": [
+              "ru",
+              "en"
+            ]
+          }
+        }
+      ],
       "expo-secure-store",
       "expo-sqlite",
       "expo-web-browser",
@@ -64,6 +79,10 @@
       "privacyPolicyUrl": "",
       "deleteAccountUrl": "",
       "supportEmail": "support@example.com"
+    },
+    "locales": {
+      "ru": "./locales/ru.json",
+      "en": "./locales/en.json"
     }
   }
 }

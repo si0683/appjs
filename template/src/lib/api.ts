@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
 import { APP } from '@/config/app';
-import { useAuth } from '@/stores/auth';
+import { authHeaders } from '@/lib/auth-headers';
 
 export class ApiError extends Error {
   constructor(
@@ -21,13 +21,12 @@ export async function api<T>(
   init: RequestInit & { json?: unknown } = {}
 ): Promise<T> {
   const { json, headers, ...rest } = init;
-  const token = useAuth.getState().token;
   const res = await fetch(`${APP.apiUrl}${path}`, {
     ...rest,
     headers: {
       Accept: 'application/json',
       ...(json !== undefined ? { 'Content-Type': 'application/json' } : {}),
-      ...(token && !token.startsWith('demo-') ? { Authorization: `Bearer ${token}` } : {}),
+      ...(await authHeaders()),
       ...headers,
     },
     body: json !== undefined ? JSON.stringify(json) : rest.body,

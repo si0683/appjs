@@ -87,7 +87,7 @@
         <li><b>Меняйте экраны в <code>src/app/</code></b><span>QR-код → Expo Go; изменения видны сразу. Не подключается — <code>npm run tunnel</code>.</span></li>
         <li><b>Соберите для магазинов</b><div class="cmd"><code>npm run build:prod &amp;&amp; npm run submit</code><button data-copy>Копировать</button></div></li>
       </ol>
-      <p class="note">ТЗ для нейросети — <a href="https://raw.githubusercontent.com/si0683/appjs/main/PROMT.md">PROMT.md</a>, требования магазинов — <a href="https://github.com/si0683/appjs/blob/main/STORES.md">STORES.md</a>. Опции: <code>--id=ru.company.app</code>, <code>--no-install</code>, <code>--no-git</code>.</p>
+      <p class="note">ТЗ для нейросети — <a href="https://raw.githubusercontent.com/si0683/appjs/main/PROMT.md">PROMT.md</a>, требования магазинов — <a href="https://github.com/si0683/appjs/blob/main/STORES.md">STORES.md</a>. Опции: <code>--backend</code>, <code>--id</code>.</p>
     </section>
     <section>
       <h2>Стек</h2>
@@ -100,10 +100,10 @@
         <tr><td>Математика</td><td><a href="https://mikemcl.github.io/decimal.js/">decimal.js</a> · <a href="https://mathjs.org">mathjs</a> · <a href="https://github.com/bennycode/trading-signals">trading-signals</a></td></tr>
         <tr><td>Статистика</td><td>как в <a href="https://github.com/AlexWan/OsEngine">OsEngine</a> + CAGR, Шарп, Сортино</td></tr>
         <tr><td>Экспорт</td><td><a href="https://tanstack.com/table">TanStack Table</a> · Excel · CSV · PDF</td></tr>
-        <tr><td>Данные</td><td><a href="https://tanstack.com/query">TanStack Query</a> · WebSocket · <a href="https://zustand.docs.pmnd.rs">zustand</a></td></tr>
-        <tr><td>Формы</td><td><a href="https://react-hook-form.com">react-hook-form</a> + <a href="https://zod.dev">zod</a></td></tr>
+        <tr><td>Данные</td><td><a href="https://tanstack.com/query">TanStack Query</a> · WebSocket · zustand · zod</td></tr>
+        <tr><td>Бэкенд</td><td><a href="https://hono.dev">Hono</a> · PostgreSQL · Redis · <a href="https://supabase.com">Supabase</a></td></tr>
         <tr><td>База</td><td><a href="https://orm.drizzle.team">Drizzle</a> + expo-sqlite · secure-store</td></tr>
-        <tr><td>Качество</td><td><a href="https://www.i18next.com">i18next</a> (языки) · Jest · ESLint</td></tr>
+        <tr><td>Качество</td><td><a href="https://www.i18next.com">i18next</a> (RTL) · Jest · ESLint</td></tr>
         <tr><td>Сборка</td><td><a href="https://docs.expo.dev/eas/">EAS</a> Build · Submit · Update</td></tr>
       </table>
     </section>

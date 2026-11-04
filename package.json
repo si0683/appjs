@@ -1,7 +1,7 @@
 {
   "name": "create-appjs",
-  "version": "1.2.0",
-  "description": "Mobile app starter for Android and iOS in one command: Expo SDK 58 + Expo Router + React Native Reusables (shadcn) + Uniwind (Tailwind 4) + Lucide + TanStack Query + zustand + react-hook-form + zod + Drizzle/SQLite + TradingView charts + Victory/Skia + decimal.js + mathjs + trading indicators + Excel/CSV/PDF export + i18next + EAS.",
+  "version": "1.3.0",
+  "description": "Mobile app starter for Android and iOS in one command: Expo SDK 58 + Expo Router + React Native Reusables (shadcn) + Uniwind (Tailwind 4) + Lucide + TanStack Query + zustand + react-hook-form + zod + Drizzle/SQLite + TradingView charts + Victory/Skia + decimal.js + mathjs + trading indicators + Excel/CSV/PDF export + i18next (lazy languages, RTL) + EAS; optional backend: own server (Hono, PostgreSQL, Redis, BullMQ, Better Auth, WebSocket, Docker) or Supabase.",
   "keywords": [
     "create",
     "starter",
@@ -46,7 +46,11 @@
     "!template/ios",
     "!template/android",
     "!template/expo-env.d.ts",
-    "!template/public/canvaskit.wasm"
+    "!template/public/canvaskit.wasm",
+    "backends",
+    "!backends/**/node_modules",
+    "!backends/**/dist",
+    "!backends/**/.env"
   ],
   "engines": {
     "node": ">=20.19.0"

@@ -56,7 +56,7 @@
 | Списки             | [FlashList](https://shopify.github.io/flash-list/)                                                                                                                      |
 | Анимации, жесты    | Reanimated 4 + Gesture Handler                                                                                                                                          |
 | Уведомления в app  | [sonner-native](https://github.com/gunnartorfis/sonner-native)                                                                                                          |
-| Языки              | i18next + react-i18next + expo-localization                                                                                                                             |
+| Языки              | i18next + react-i18next + expo-localization: JSON-словари, ленивая загрузка языков, письмо справа налево, название приложения на языке телефона                         |
 | Вибрация, картинки | expo-haptics, expo-image                                                                                                                                                |
 | Тесты, качество    | Jest (jest-expo) + Testing Library, ESLint, Prettier                                                                                                                    |
 | Сборка, публикация | EAS Build / Submit / Update                                                                                                                                             |
@@ -82,7 +82,7 @@ src/
   stores/              zustand: настройки (тема, язык), вход
   lib/                 api.ts, ws.ts, decimal.ts, finance.ts, deal-stats.ts, export.ts,
                        chart-theme.ts, storage.ts, validation.ts, haptics.ts, theme.ts
-  i18n/                ru.ts (база), en.ts
+  i18n/                index.ts (языки, RTL, регион), locales/ru.json (база), en.json
   config/app.ts        имя, адрес API
   global.css           цвета темы (светлая и тёмная)
 app.json               имя, иконка, id приложения, плагины
@@ -113,7 +113,9 @@ eas.json               профили сборки EAS
 
 **Статистика.** `dealReport(dealsFromTrades(trades, капитал))` — отчёт как в OsEngine; `cagr`, `maxDrawdown`, `sharpe`, `sortino`, `positionSize` — в `src/lib/finance.ts`.
 
-**Новый язык.** Скопируйте `src/i18n/en.ts` → `de.ts`, переведите, добавьте в `LANGUAGES` в `src/i18n/index.ts`.
+**Новый язык.** `npm run i18n -- add de` → переведите `src/i18n/locales/de.json` → добавьте `de` в `LANGUAGES` и `LOADERS` в `src/i18n/index.ts` (`dir: 'rtl'` — для арабского, иврита, фарси: интерфейс зеркалится). Переводчикам — `npm run i18n -- export` (CSV для Google Sheets), обратно — `npm run i18n -- import i18n.csv`. Проверка — `npm run i18n -- check` (входит в `npm run check`). Название под иконкой и тексты разрешений — `locales/<язык>.json` в корне.
+
+**Живые данные.** Обновления с сокета попадают на экран не чаще `UI_RATE` (`src/features/market/index.ts`): тикеры пачкой раз в 250 мс, свеча — 100 мс. Для своих потоков — `throttleLatest` и `batchByKey` из `src/lib/throttle.ts`.
 
 **Нативный модуль, которого нет в Expo Go** (MMKV, Stripe, камера с ML и т. п.): `npx expo install <пакет>` → `npm run build:dev` → установите эту сборку на телефон вместо Expo Go. Дальше всё как раньше: `npm start`, изменения сразу.
 
@@ -122,6 +124,18 @@ eas.json               профили сборки EAS
 ## Веб-версия
 
 `npm run web` — для отладки вёрстки. Графики Skia в браузере грузят `public/canvaskit.wasm` (копируется сам при `npm install`). База SQLite в браузере работает через WebAssembly и требует заголовков COOP/COEP (уже настроены в `metro.config.js` и `app.json`); при первом открытии адрес на секунду сменится на `/index.html` — так задумано.
+
+## Бэкенд
+
+При создании проекта — `--backend=` (или вопрос установщика):
+
+| Вариант    | Что это                                                                                                                                                   | Когда                                                               |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `none`     | без сервера: данные на телефоне, котировки напрямую с биржи                                                                                               | прототип, офлайн-приложение, свой API уже есть                      |
+| `server`   | папка `server/`: Node + Hono, PostgreSQL (Drizzle), Redis, BullMQ, Better Auth, WebSocket; Docker Compose и публикация образа в GitHub Container Registry | большая нагрузка, своя логика, торговые ключи бирж, полный контроль |
+| `supabase` | Supabase: облачная база, вход, файлы, realtime, функции; таблицы с RLS и удаление аккаунта — в `supabase/`                                                | быстрый старт без своего сервера                                    |
+
+Экраны от выбора не меняются: вход — `src/stores/auth.ts`, заголовки запросов — `src/lib/auth-headers.ts`, котировки — `EXPO_PUBLIC_MARKET_SOURCE` (`binance` · `server` · `demo`).
 
 ## Магазины приложений
 

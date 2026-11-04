@@ -12,3 +12,6 @@ TechnicalSpecification/.obsidian/workspace*.json
 template/TechnicalSpecification/.obsidian/workspace*.json
 template/public/canvaskit.wasm
 template/.gitignore
+backends/server/node_modules/
+backends/server/dist/
+backends/server/.env

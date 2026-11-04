@@ -1,0 +1,20 @@
+{
+  "title": "свой сервер — Node + Hono, PostgreSQL, Redis, BullMQ, Better Auth, WebSocket, Docker",
+  "copy": { "server": "server", "server-files": "." },
+  "install": ["server"],
+  "dependencies": {
+    "better-auth": "^1.7.16",
+    "@better-auth/expo": "^1.7.16",
+    "expo-network": "~58.0.4"
+  },
+  "scripts": {
+    "server": "npm --prefix server run dev",
+    "server:up": "npm --prefix server run up",
+    "server:down": "npm --prefix server run down"
+  },
+  "env": [
+    "# Свой сервер (папка server/). На телефоне localhost не виден — укажите IP компьютера в сети или адрес туннеля",
+    "EXPO_PUBLIC_API_URL=http://localhost:8080",
+    "EXPO_PUBLIC_MARKET_SOURCE=server"
+  ]
+}

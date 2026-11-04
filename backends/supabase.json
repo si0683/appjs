@@ -1,0 +1,16 @@
+{
+  "title": "Supabase — облачная база PostgreSQL, вход, файлы, realtime (без своего сервера)",
+  "copy": { "supabase-files": "." },
+  "install": [],
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0"
+  },
+  "scripts": {
+    "supabase": "npx supabase"
+  },
+  "env": [
+    "# Supabase: Project Settings → API Keys (публичный publishable-ключ; service_role — никогда в приложении)",
+    "EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co",
+    "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY="
+  ]
+}

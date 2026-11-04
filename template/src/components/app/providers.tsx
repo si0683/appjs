@@ -8,7 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 import { Uniwind, useUniwind } from 'uniwind';
 
-import i18n from '@/i18n';
+import i18n, { applyDirection } from '@/i18n';
 import { queryClient } from '@/lib/api';
 import { NAV_THEME } from '@/lib/theme';
 import { useSettings } from '@/stores/settings';
@@ -31,6 +31,8 @@ function useSettingsSync() {
   React.useEffect(() => Uniwind.setTheme(theme), [theme]);
   React.useEffect(() => {
     if (i18n.language !== language) void i18n.changeLanguage(language);
+    // Арабский, иврит и т. п. — зеркальный интерфейс (на телефоне — с перезапуском)
+    void applyDirection(language);
   }, [language]);
 }
 

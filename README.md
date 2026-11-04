@@ -14,7 +14,7 @@ npm create appjs@latest my-app
 2. `cd my-app` → `npm start` → отсканируйте QR в **Expo Go** на телефоне. Не видит компьютер — `npm run tunnel`.
 3. Меняйте экраны в `src/app/` — телефон обновится сразу. Сборка для магазинов — `npm run build:prod` и `npm run submit` (облако EAS).
 
-Опции: `--id=ru.company.myapp` (id для App Store / Google Play), `--no-install`, `--no-git`.
+Опции: `--id=ru.company.myapp` (id для App Store / Google Play), `--backend=none|server|supabase` (сервер: нет / свой — Node, PostgreSQL, Redis, Docker-образ / Supabase), `--no-install`, `--no-git`.
 
 ## Стек
 
@@ -36,7 +36,8 @@ npm create appjs@latest my-app
 | База на телефоне | [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/) + [Drizzle ORM](https://orm.drizzle.team) с миграциями |
 | Секреты | expo-secure-store (Keychain / Keystore) |
 | Списки, анимации | FlashList · Reanimated 4 · Gesture Handler · sonner-native |
-| Языки | i18next · expo-localization (ru, en) |
+| Языки | i18next · expo-localization: ленивая загрузка языков, письмо справа налево, CSV для переводчиков |
+| Бэкенд (по выбору) | свой сервер: Hono · PostgreSQL · Redis · BullMQ · Better Auth · WebSocket · Docker (образ в GHCR) — или Supabase |
 | Качество | Jest + Testing Library · ESLint · Prettier |
 | Сборка | EAS Build / Submit / Update |
 
